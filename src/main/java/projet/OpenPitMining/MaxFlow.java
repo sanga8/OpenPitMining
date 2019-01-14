@@ -17,7 +17,7 @@ public class MaxFlow {
 			boolean visited[] = new boolean[V]; 
 			for(int i=0; i<V; ++i) 
 				visited[i]=false; 
-
+      
 			// Create a queue, enqueue source vertex and mark 
 			// source vertex as visited 
 			LinkedList<Integer> queue = new LinkedList<Integer>(); 
