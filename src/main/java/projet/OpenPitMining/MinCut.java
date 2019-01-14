@@ -7,7 +7,7 @@ import java.util.Queue;
 
 public class MinCut { 
 	 static int X = Integer.MAX_VALUE; //Xini
-       
+	 static final int V =14; //Number of vertices in graph 
  // Returns true if there is a path 
  // from source 's' to sink 't' in residual  
  // graph. Also fills parent[] to store the path  
@@ -64,6 +64,7 @@ public class MinCut {
      // graph with given capacities in the original  
      // graph as residual capacities in residual graph 
      // rGraph[i][j] indicates residual capacity of edge i-j 
+     
      int[][] rGraph = new int[graph.length][graph.length];  
      for (int i = 0; i < graph.length; i++) { 
          for (int j = 0; j < graph.length; j++) { 
@@ -94,7 +95,7 @@ public class MinCut {
              rGraph[v][u] = rGraph[v][u] + pathFlow; 
          } 
      } 
-       
+     
      // Flow is maximum now, find vertices reachable from s      
      boolean[] isVisited = new boolean[graph.length];      
      dfs(rGraph, s, isVisited); 
@@ -110,25 +111,28 @@ public class MinCut {
      } 
  } 
 
- //Driver Program 
+
  public static void main(String args[]) { 
-       
-     // Let us create a graph shown in the above example 
-     int graph[][] = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 11, 22, 2, 0}, //S
-					  {0, 0, 0, 0, 0, X, X, 0, 0, 0, 0, 0, 0, 10},
-					  {0, 0, 0, 0, 0, X, X, X, 0, 0, 0, 0, 0, 5}, 
-					  {0, 0, 0, 0, 0, 0, X, X, X, 0, 0, 0, 0, 7}, 
-					  {0, 0, 0, 0, 0, 0, 0, X, X, 0, 0, 0, 0, 4}, 
-					  {0, 0, 0, 0, 0, 0, 0, 0, X, X, 0, 0, 0, 10},
-					  {0, 0, 0, 0, 0, 0, 0, 0, 0, X, X, X, 0, 11},
-					  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, X, X, 0},
-					  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, X, 3},
-					  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-					  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-					  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-					  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-					  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}// T
+
+     int graph[][] = { 
+    		  {0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 11, 22, 2, 0}, //S
+			  
+			  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10},
+			  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5}, 
+			  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7}, 
+			  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4}, 
+			  {0, X, X, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10},
+			  {0, X, X, X, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11},
+			  {0, 0, X, X, X, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+			  {0, 0, 0, X, X, 0, 0, 0, 0, 0, 0, 0, 0, 3},
+			  {0, 0, 0, 0, 0, X, X, 0, 0, 0, 0, 0, 0, 0},
+			  {0, 0, 0, 0, 0, X, X, X, 0, 0, 0, 0, 0, 0},
+			  {0, 0, 0, 0, 0, 0, X, X, X, 0, 0, 0, 0, 0},
+			  {0, 0, 0, 0, 0, 0, 0, X, X, 0, 0, 0, 0, 0},
+			    
+			  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}// T
          }; 
-     minCut(graph, 0, 9); 
+     minCut(graph, 0, V-1); 
+     
  } 
 } 
