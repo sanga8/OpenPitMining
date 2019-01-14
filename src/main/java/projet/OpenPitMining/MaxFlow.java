@@ -5,8 +5,8 @@ package projet.OpenPitMining;
 	import java.util.LinkedList; 
 	
 public class MaxFlow {
-		static final int V =10; //Number of vertices in graph 
-		 static int INF = Integer.MAX_VALUE; //infini
+		static final int V =14; //Number of vertices in graph 
+		 static int X = Integer.MAX_VALUE; //infini
 		
 		/* Returns true if there is a path from source 's' to sink 
 		't' in residual graph. Also fills parent[] to store the 
@@ -105,21 +105,32 @@ public class MaxFlow {
 		public static void main (String[] args) throws java.lang.Exception 
 		{ 
 			// Let us create a graph shown in the above example 
-			int graph[][] =new int[][] {{0, 3, 1, 2, 1, 1, 0, 0, 0, 0}, //S
-										{0, 0, 0, 0, 0, INF, INF, 0, 0, 0}, 
-										{0, 0, 0, 0, 0, INF, INF, INF, 0, 0}, 
-										{0, 0, 0, 0, 0, 0, INF, INF, INF, 0}, 
-										{0, 0, 0, 0, 0, 0, 0, INF, INF, 0}, 
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0} // T
-									}; 
+			int graph[][] =new int[][] {
+				  {0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 11, 22, 2, 0}, //S
+				  
+				
+				  
+				  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10},
+				  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5}, 
+				  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7}, 
+				  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4}, 
+				  {X, X, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10},
+				  {X, X, X, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11},
+				  {0, X, X, X, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+				  {0, 0, X, X, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
+				  {0, 0, 0, 0, X, X, 0, 0, 0, 0, 0, 0, 0, 0},
+				  {0, 0, 0, 0, X, X, X, 0, 0, 0, 0, 0, 0, 0},
+				  {0, 0, 0, 0, 0, X, X, X, 0, 0, 0, 0, 0, 0},
+				  {0, 0, 0, 0, 0, 0, X, X, 0, 0, 0, 0, 0, 0},
+				  
+				  
+				  
+				  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}// T
+   }; 
 			MaxFlow m = new MaxFlow(); 
 
 			System.out.println("The maximum possible flow is " + 
-							m.fordFulkerson(graph, 0, 9)); 
+							m.fordFulkerson(graph, 0, V-1)); 
 
 		} 
 	} 

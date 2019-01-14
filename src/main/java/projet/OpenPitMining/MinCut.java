@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.Queue; 
 
 public class MinCut { 
-	 static int INF = Integer.MAX_VALUE; //infini
+	 static int X = Integer.MAX_VALUE; //Xini
        
  // Returns true if there is a path 
  // from source 's' to sink 't' in residual  
@@ -114,17 +114,21 @@ public class MinCut {
  public static void main(String args[]) { 
        
      // Let us create a graph shown in the above example 
-     int graph[][] = {{0, 3, 1, 2, 1, 1, 0, 0, 0, 0}, //S
-				{0, 0, 0, 0, 0, INF, INF, 0, 0, 0}, 
-				{0, 0, 0, 0, 0, INF, INF, INF, 0, 0}, 
-				{0, 0, 0, 0, 0, 0, INF, INF, INF, 0}, 
-				{0, 0, 0, 0, 0, 0, 0, INF, INF, 0}, 
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
-				{0, 0, 0, 0, 0, 0, 0, 0, 0, 0} // T
+     int graph[][] = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 11, 22, 2, 0}, //S
+					  {0, 0, 0, 0, 0, X, X, 0, 0, 0, 0, 0, 0, 10},
+					  {0, 0, 0, 0, 0, X, X, X, 0, 0, 0, 0, 0, 5}, 
+					  {0, 0, 0, 0, 0, 0, X, X, X, 0, 0, 0, 0, 7}, 
+					  {0, 0, 0, 0, 0, 0, 0, X, X, 0, 0, 0, 0, 4}, 
+					  {0, 0, 0, 0, 0, 0, 0, 0, X, X, 0, 0, 0, 10},
+					  {0, 0, 0, 0, 0, 0, 0, 0, 0, X, X, X, 0, 11},
+					  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, X, X, 0},
+					  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, X, X, 3},
+					  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+					  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+					  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+					  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+					  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}// T
          }; 
-     minCut(graph, 0, 5); 
+     minCut(graph, 0, 9); 
  } 
 } 
