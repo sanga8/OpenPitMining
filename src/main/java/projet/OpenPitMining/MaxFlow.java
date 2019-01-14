@@ -6,7 +6,7 @@ package projet.OpenPitMining;
 	
 public class MaxFlow {
 		static final int V =10; //Number of vertices in graph 
-		static final int X = 10000000; //infini
+		 static int INF = Integer.MAX_VALUE; //infini
 		
 		/* Returns true if there is a path from source 's' to sink 
 		't' in residual graph. Also fills parent[] to store the 
@@ -106,14 +106,14 @@ public class MaxFlow {
 		{ 
 			// Let us create a graph shown in the above example 
 			int graph[][] =new int[][] {{0, 3, 1, 2, 1, 1, 0, 0, 0, 0}, //S
-										{0, 0, 0, 0, 0, X, X, 0, 0, 0}, 
-										{0, 0, 0, 0, 0, X, X, X, 0, 0}, 
-										{0, 0, 0, 0, 0, 0, X, X, X, 0}, 
-										{0, 0, 0, 0, 0, 0, 0, X, X, 0}, 
+										{0, 0, 0, 0, 0, INF, INF, 0, 0, 0}, 
+										{0, 0, 0, 0, 0, INF, INF, INF, 0, 0}, 
+										{0, 0, 0, 0, 0, 0, INF, INF, INF, 0}, 
+										{0, 0, 0, 0, 0, 0, 0, INF, INF, 0}, 
 										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 3},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+										{0, 0, 0, 0, 0, 0, 0, 0, 0, 5},
 										{0, 0, 0, 0, 0, 0, 0, 0, 0, 0} // T
 									}; 
 			MaxFlow m = new MaxFlow(); 
