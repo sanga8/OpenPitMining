@@ -99,16 +99,28 @@ public class MinCut {
      // Flow is maximum now, find vertices reachable from s      
      boolean[] isVisited = new boolean[graph.length];      
      dfs(rGraph, s, isVisited); 
-       
+      
+     int mincut=0;
+     int allprofit=0;
+     
+     
+     for (int i=0;i<graph.length;i++) {
+    	 allprofit += graph[0][i];
+     }
+     
      // Print all edges that are from a reachable vertex to 
      // non-reachable vertex in the original graph      
      for (int i = 0; i < graph.length; i++) { 
          for (int j = 0; j < graph.length; j++) { 
              if (graph[i][j] > 0 && isVisited[i] && !isVisited[j]) { 
                  System.out.println(i + " - " + j); 
+                 mincut += graph[i][j];
+                 
              } 
          } 
      } 
+     int maxprofit =allprofit-mincut;
+     System.out.println("Le profit max est = "+maxprofit);
  } 
 
 
