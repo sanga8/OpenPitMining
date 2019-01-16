@@ -34,5 +34,7 @@ public interface WeightedDiGraph<Vertex, Edge> {
 	public List<Collection<Vertex>> PathAndVisited(Vertex src, Vertex dest);
 
 	public List<Collection<Vertex>> PathAndVisited(String src, String dest);
+
+	public void addProfit(Vertex v, Integer p);
 	
 }
