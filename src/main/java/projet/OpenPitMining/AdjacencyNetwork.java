@@ -20,7 +20,7 @@ public class AdjacencyNetwork<Vertex,Edge> {
 	public void addVertex(Vertex v) {
 		if (!vertices.contains(v)) {
 			vertices.add(v);
-			//vertexToEdges.put(v, new ArrayList<Edge>());
+			vertexToEdges.put(v, new ArrayList<Edge>());
 		}
 	}
 	
