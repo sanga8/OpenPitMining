@@ -103,27 +103,48 @@ public class Main {
 					res.addEdge(currentEdgeId, network[i][j], network[i-1][j], Integer.MAX_VALUE);
 					v2.addEdge(currentEdgeId, network[i][j], network[i-1][j], Integer.MAX_VALUE);
 					currentEdgeId++;
+					res.addEdge(currentEdgeId,  network[i-1][j], network[i][j], 0);
+					v2.addEdge(currentEdgeId, network[i-1][j], network[i][j],  0);
+					currentEdgeId++;
 					res.addEdge(currentEdgeId, network[i][j], network[i-1][j+1], Integer.MAX_VALUE);
 					v2.addEdge(currentEdgeId, network[i][j], network[i-1][j+1], Integer.MAX_VALUE);
+					currentEdgeId++;
+					res.addEdge(currentEdgeId, network[i-1][j+1], network[i][j], 0);
+					v2.addEdge(currentEdgeId, network[i-1][j+1], network[i][j], 0);
 					currentEdgeId++;
 				}
 				else if (j==columns) { //derniere
 					res.addEdge(currentEdgeId, network[i][j], network[i-1][j], Integer.MAX_VALUE);
 					v2.addEdge(currentEdgeId, network[i][j], network[i-1][j], Integer.MAX_VALUE);
 					currentEdgeId++;
+					res.addEdge(currentEdgeId, network[i-1][j], network[i][j], 0);
+					v2.addEdge(currentEdgeId,  network[i-1][j], network[i][j], 0);
+					currentEdgeId++;
 					res.addEdge(currentEdgeId, network[i][j], network[i-1][j-1], Integer.MAX_VALUE);
 					v2.addEdge(currentEdgeId, network[i][j], network[i-1][j-1], Integer.MAX_VALUE);
+					currentEdgeId++;
+					res.addEdge(currentEdgeId, network[i-1][j-1], network[i][j], 0);
+					v2.addEdge(currentEdgeId, network[i-1][j-1], network[i][j], 0);
 					currentEdgeId++;
 				}
 				else {// ni premiere ni derniere colonne
 					res.addEdge(currentEdgeId, network[i][j], network[i-1][j], Integer.MAX_VALUE);
 					v2.addEdge(currentEdgeId, network[i][j], network[i-1][j], Integer.MAX_VALUE);
 					currentEdgeId++;
+					res.addEdge(currentEdgeId, network[i-1][j], network[i][j], 0);
+					v2.addEdge(currentEdgeId, network[i-1][j], network[i][j], 0);
+					currentEdgeId++;
 					res.addEdge(currentEdgeId, network[i][j], network[i-1][j-1], Integer.MAX_VALUE);
 					v2.addEdge(currentEdgeId, network[i][j], network[i-1][j-1], Integer.MAX_VALUE);
 					currentEdgeId++;
+					res.addEdge(currentEdgeId, network[i-1][j-1], network[i][j], 0);
+					v2.addEdge(currentEdgeId, network[i-1][j-1], network[i][j], 0);
+					currentEdgeId++;
 					res.addEdge(currentEdgeId, network[i][j], network[i-1][j+1], Integer.MAX_VALUE);
 					v2.addEdge(currentEdgeId, network[i][j], network[i-1][j+1], Integer.MAX_VALUE);
+					currentEdgeId++;
+					res.addEdge(currentEdgeId, network[i-1][j+1], network[i][j], 0);
+					v2.addEdge(currentEdgeId, network[i-1][j+1], network[i][j], 0);
 					currentEdgeId++;
 				}
 			}
@@ -148,12 +169,12 @@ public class Main {
 		
 		AdjacencyNetwork<Cell, Integer> rGraph = construct(graphs.get(1));
 		
-		GUI.setupCanvas(vGraph.getVertices(),512,512);
+		GUI.setupCanvas(vGraph.getVertices(),900,900);
 		GUI.draw(vGraph);
 		GUI.drawNames(vGraph);
 
-		System.out.println(vGraph.getVertices().size());
-		System.out.println(rGraph.getVertices().size()); // renvoie 2 de + car il y a S et T
+		//System.out.println(vGraph.getVertices().size());
+		//System.out.println(rGraph.getVertices().size()); // renvoie 2 de + car il y a S et T
 		
 		
 
