@@ -43,8 +43,13 @@ public class AdjacencyNetwork<Vertex,Edge> {
 	}
 
 	public void addEdge(Edge e, Vertex src, Vertex dest, Integer weight) {
-		// TODO Auto-generated method stub
-		//edges.put(e,weight);
+		
+		//addVertex(src);
+		//addVertex(dest);
+		edgeToSrc.put(e, src);
+		edgeToDest.put(e, dest);
+		vertexToEdges.get(src).add(e);
+		edges.put(e,weight);
 		
 	}
 
