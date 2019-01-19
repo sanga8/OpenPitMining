@@ -161,9 +161,31 @@ public class MinCut {
 
 	        Cell iter = T;
 	 		while (iter != null) {
-	 			pathFlow = Math.min(pathFlow, rGraph[u][v]); // selectionnne ledge de capacite minimale sur le chemin afin denvoyer ce flow
-	 			
+	 			pathFlow = Math.min(pathFlow, rGraph.distParent(path.get(iter), iter)); // selectionnne ledge de capacite minimale sur le chemin afin denvoyer ce flow
+	 			iter = path.get(iter);
 	 		}
+	 		
+	 		Cell ite = T;
+	 		while (ite != null) {
+	 			
+	 			for(int each: rGraph.vertexToEdges.get(path.get(ite))) {
+	 	    		if(rGraph.edgeToDest.get(each).equals(ite)) {
+	 	    			// mettre a jour
+	 	    		}
+	 	    	}
+	 			
+	 			for(int each: rGraph.vertexToEdges.get(ite)) {
+	 	    		if(rGraph.edgeToSrc.get(each).equals(path.get(ite))) {
+	 	    			// mettre a jour
+	 	    		}
+	 	    	}
+	 			
+	 			ite = path.get(ite);
+	 		}
+	 		
+	             rGraph[u][v] = rGraph[u][v] - pathFlow; 
+	             rGraph[v][u] = rGraph[v][u] + pathFlow; 
+	         
 			
 			
 		}
