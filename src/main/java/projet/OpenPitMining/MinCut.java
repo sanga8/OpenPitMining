@@ -18,8 +18,6 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 		rGraph.addVertex(S);
 		rGraph.addVertex(T);
 		
-		System.out.println("efffffffffffffffffffffffff");
-		
 		
 		int currentEdgeId = rGraph.getEdges().size();
 		
@@ -70,11 +68,19 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 	        Cell iter = T;
 	 		while (path.get(iter) != null) {
 	 			System.out.println(iter.getR()+";"+iter.getC());
-	 			pathFlow = Math.min(pathFlow, rGraph.distParent(path.get(iter), iter)); // selectionnne ledge de capacite minimale sur le chemin afin denvoyer ce flow
+	 			if(iter.equals(T)) {
+	 				pathFlow = Math.min(pathFlow, Math.abs(rGraph.distParent(path.get(iter), iter))); // selectionnne ledge de capacite minimale sur le chemin afin denvoyer ce flow
+	 			}
+	 			if(path.get(iter).equals(S)) {
+	 				pathFlow = Math.min(pathFlow, Math.abs(rGraph.distParent(path.get(iter), iter))); // selectionnne ledge de capacite minimale sur le chemin afin denvoyer ce flow
+	 			}
+	 			
 	 			iter = path.get(iter);
 	 		}
 	 		
+	 		
 	 		System.out.println("pathflow="+pathFlow);
+	 		
 	 		
 	 		Cell ite = T;
 	 		while (path.get(ite) != null) {
@@ -116,7 +122,7 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 	     // non-reachable vertex in the original graph   
 		Map<Cell,Boolean> isVisited = new HashMap<Cell,Boolean>();
 		
-		for(Cell each : rGraph.getVertices()) {
+		/*for(Cell each : rGraph.getVertices()) {
 			
 			List<Cell> reachable = new ArrayList<Cell>();
 			isVisited.put(each, rGraph.areConnected(S, each));
@@ -127,10 +133,10 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 			System.out.println("poids "+rGraph.getWeight(each));
 			if(isVisited.get(rGraph.edgeToSrc.get(each))==true && isVisited.get(rGraph.edgeToDest.get(each))==false) {
 				
-				System.out.println(rGraph.edgeToSrc.get(each).getR()+";"+rGraph.edgeToSrc.get(each).getC());
+				//System.out.println(rGraph.edgeToSrc.get(each).getR()+";"+rGraph.edgeToSrc.get(each).getC());
 				mincut += rGraph.getWeight(each);
 			}
-		}
+		}*/
 		
 	     int maxprofit =allProfit-mincut;
 	     

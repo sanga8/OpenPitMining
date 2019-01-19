@@ -185,7 +185,7 @@ public class Main {
 		GUI.draw(vGraph);
 		GUI.drawNames(vGraph);
 		
-		System.out.println("efffffffffffffffffffffffff");
+		
 		MinCut.mC(vGraph, rGraph);
 
 		//System.out.println(rGraph.getVertices().size()); // renvoie 2 de + car il y a S et T

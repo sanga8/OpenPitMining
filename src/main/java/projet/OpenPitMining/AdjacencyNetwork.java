@@ -201,7 +201,7 @@ public class AdjacencyNetwork<Vertex,Edge> {
 			
 			for (Vertex each : getAdjacentVertices(v)) {
 				
-				if (!visited.contains(each) ) {
+				if (!visited.contains(each) && (distParent(v,each)-distParent(each,v))>0 ) {
 					
 					dist=vertexWeight.get(v)+distParent(v,each);
 					if(vertexWeight.get(each)>dist) {
