@@ -117,61 +117,6 @@ public class AdjacencyNetwork<Vertex,Edge> {
         } return null;
     }*/
 	
-	public Map<Vertex,Vertex> finPath(Vertex src, Vertex dest) {
-		
-		List<Vertex> visited = new ArrayList<Vertex>();
-		Map<Vertex, Vertex> parents = new HashMap<Vertex, Vertex>();
-		Map<Vertex, Vertex> pathParents = new HashMap<Vertex, Vertex>();
-		Map<Vertex,Integer> vertexWeight = new HashMap<Vertex, Integer>();
-		//Map<Vertex,Integer> distances = new HashMap<>();
-		//Map<Vertex,Integer> heuristic = new HashMap<>();
-		Queue<Vertex> toVisit = new LinkedList<Vertex>();
-    	
-    	for (Vertex each:vertices) {
-    		vertexWeight.put(each,Integer.MAX_VALUE);
-        }
-    	
-    	vertexWeight.put(src, 0);
-		toVisit.add(src);
-		parents.put(src, null);
-		Vertex v = src;
-		
-		List<Vertex> path = new ArrayList<Vertex>();
-		int dist =0;
-		
-		while (!toVisit.isEmpty() ) {
-			v = toVisit.poll();
-			visited.add(v);
-			
-			for (Vertex each : getAdjacentVertices(v)) {
-				
-				if (!visited.contains(each) ) {
-					
-					dist=vertexWeight.get(v)+distParent(v,each);
-					if(vertexWeight.get(each)>dist) {
-						vertexWeight.put(each, dist);
-						parents.put(each, v);
-					}
-					toVisit.add(each);
-				}
-			}
-			
-		}
-		
-		if(parents.containsKey(dest)) {
-			Vertex iter = dest;
-			while (iter != null) {
-				path.add(iter);
-				pathParents.put(iter, parents.get(iter));
-				iter = parents.get(iter);
-			}
-			return pathParents;
-		}
-		return null;
-		
-		
-	}
-	
 
 	public Map<Vertex,Vertex> ShortestPath(Vertex src, Vertex dest) {
 		
@@ -201,8 +146,13 @@ public class AdjacencyNetwork<Vertex,Edge> {
 			
 			for (Vertex each : getAdjacentVertices(v)) {
 				
-				if (!visited.contains(each) && (distParent(v,each)-distParent(each,v))>0 ) {
+				System.out.println(getProfit().get(v));
+				System.out.println(getProfit().get(each));
+				System.out.println("distance "+distParent(v,each));
+				
+				if (!visited.contains(each) && distParent(v,each)>0 ) {
 					
+					System.out.println("jsuis la");
 					dist=vertexWeight.get(v)+distParent(v,each);
 					if(vertexWeight.get(each)>dist) {
 						vertexWeight.put(each, dist);
@@ -228,22 +178,52 @@ public class AdjacencyNetwork<Vertex,Edge> {
 		
 	}
 	
-	public boolean areConnected(Vertex src, Vertex dest) {
-        List<Vertex> toDo = new ArrayList<Vertex>();
-        List<Vertex> done = new ArrayList<Vertex>();
-        toDo.add(src);
-        while (!toDo.isEmpty()) {
-            Vertex v = toDo.get(0);
-            toDo.remove(0);
-            done.add(v);
+	public boolean areConnected(AdjacencyNetwork rGraph, Vertex src, Vertex dest,Map<Vertex, Vertex> parents) {
+   
+        List<Vertex> visited = new ArrayList<Vertex>();
+        Queue<Vertex> toVisit = new LinkedList<Vertex>();
+        
+        parents.put(src, null);
+        toVisit.add(src);
+        
+        while (!toVisit.isEmpty()) {
+            Vertex v = toVisit.poll();
+            visited.add(v);
             for (Vertex each : getAdjacentVertices(v)) {
-                if (v.equals(dest)) {
-                    return true;
-                }
-                if (!done.contains(each)) {
-                    toDo.add(each);
+               
+                if (!visited.contains(each) && distParent(v,each)>0) {
+                	toVisit.add(each);
+                	parents.put(each, v);
                 }
             }
+        }
+        if(visited.contains(dest)) {
+        	return true;
+        }
+        return false;
+    }
+	
+	public boolean areConnected(Vertex src, Vertex dest) {
+		   
+        List<Vertex> visited = new ArrayList<Vertex>();
+        Queue<Vertex> toVisit = new LinkedList<Vertex>();
+        
+        
+        toVisit.add(src);
+        
+        while (!toVisit.isEmpty()) {
+            Vertex v = toVisit.poll();
+            visited.add(v);
+            for (Vertex each : getAdjacentVertices(v)) {
+               
+                if (!visited.contains(each) && distParent(v,each)>0) {
+                	toVisit.add(each);
+                	
+                }
+            }
+        }
+        if(visited.contains(dest)) {
+        	return true;
         }
         return false;
     }

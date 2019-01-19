@@ -28,8 +28,7 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 				int profit = rGraph.getProfit().get(each);
 				
 				if(profit<0) {
-					System.out.println(each.getR()+";"+each.getC());
-					System.out.println(profit);
+					
 					rGraph.addEdge(currentEdgeId, each, T, profit);
 					currentEdgeId++;
 					rGraph.addEdge(currentEdgeId, T, each, 0);
@@ -55,27 +54,30 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 			
 		}
 	
-		
-		HashMap<Cell,Cell> path = new HashMap<Cell,Cell>();
 		//System.out.println(path);
 		
-		while((path = (HashMap<Cell, Cell>) rGraph.ShortestPath(S, T))!=null) {  // tant qu'il y a un chemin
+		
+		System.out.println("debut");
+		
+		Map<Cell, Cell> parents = new HashMap<Cell, Cell>();
+		
+		while(rGraph.areConnected(rGraph, S, T, parents)==true) {  // tant qu'il y a un chemin
 			
-			
+			System.out.println("jsuis dedans");
 			
 			int pathFlow = Integer.MAX_VALUE;          
 
 	        Cell iter = T;
-	 		while (path.get(iter) != null) {
+	 		while (parents.get(iter) != null) {
 	 			System.out.println(iter.getR()+";"+iter.getC());
 	 			if(iter.equals(T)) {
-	 				pathFlow = Math.min(pathFlow, Math.abs(rGraph.distParent(path.get(iter), iter))); // selectionnne ledge de capacite minimale sur le chemin afin denvoyer ce flow
+	 				pathFlow = Math.min(pathFlow, Math.abs(rGraph.distParent(parents.get(iter), iter))); // selectionnne ledge de capacite minimale sur le chemin afin denvoyer ce flow
 	 			}
-	 			if(path.get(iter).equals(S)) {
-	 				pathFlow = Math.min(pathFlow, Math.abs(rGraph.distParent(path.get(iter), iter))); // selectionnne ledge de capacite minimale sur le chemin afin denvoyer ce flow
+	 			if(parents.get(iter).equals(S)) {
+	 				pathFlow = Math.min(pathFlow, Math.abs(rGraph.distParent(parents.get(iter), iter))); // selectionnne ledge de capacite minimale sur le chemin afin denvoyer ce flow
 	 			}
 	 			
-	 			iter = path.get(iter);
+	 			iter = parents.get(iter);
 	 		}
 	 		
 	 		
@@ -83,27 +85,27 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 	 		
 	 		
 	 		Cell ite = T;
-	 		while (path.get(ite) != null) {
+	 		while (parents.get(ite) != null) {
 	 			
-	 			for(int each: rGraph.vertexToEdges.get(path.get(ite))) {
+	 			for(int each: rGraph.vertexToEdges.get(parents.get(ite))) {
 	 	    		if(rGraph.edgeToDest.get(each).equals(ite)) {
 	 	    			rGraph.setWeight(each, -pathFlow);  // enleve pathFlow
 	 	    		}
 	 	    	}
 	 			
 	 			for(int each: rGraph.vertexToEdges.get(ite)) {
-	 	    		if(rGraph.edgeToSrc.get(each).equals(path.get(ite))) {
+	 	    		if(rGraph.edgeToSrc.get(each).equals(parents.get(ite))) {
 	 	    			rGraph.setWeight(each, pathFlow);   // ajoute pathFlow
 	 	    		}
 	 	    	}
 	 			
-	 			ite = path.get(ite);
+	 			ite = parents.get(ite);
 	 		}
 	         
 			
 		}
 		
-		System.out.println("---");
+		System.out.println("fin");
 		
 		int allProfit = 0;
 		
@@ -122,7 +124,8 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 	     // non-reachable vertex in the original graph   
 		Map<Cell,Boolean> isVisited = new HashMap<Cell,Boolean>();
 		
-		/*for(Cell each : rGraph.getVertices()) {
+		
+		for(Cell each : rGraph.getVertices()) {
 			
 			List<Cell> reachable = new ArrayList<Cell>();
 			isVisited.put(each, rGraph.areConnected(S, each));
@@ -130,15 +133,17 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 		}
 		
 		for(int each : rGraph.getEdges()) {
-			System.out.println("poids "+rGraph.getWeight(each));
+			//System.out.println("poids "+rGraph.getWeight(each));
 			if(isVisited.get(rGraph.edgeToSrc.get(each))==true && isVisited.get(rGraph.edgeToDest.get(each))==false) {
 				
-				//System.out.println(rGraph.edgeToSrc.get(each).getR()+";"+rGraph.edgeToSrc.get(each).getC());
+				System.out.println(rGraph.edgeToSrc.get(each).getR()+";"+rGraph.edgeToSrc.get(each).getC());
 				mincut += rGraph.getWeight(each);
 			}
-		}*/
+		}
 		
-	     int maxprofit =allProfit-mincut;
+	     int maxprofit =allProfit-Math.abs(mincut);
+	     
+	     System.out.println("La mincut"+mincut);
 	     
 	     System.out.println("Le profit max est = "+maxprofit);
 	}
