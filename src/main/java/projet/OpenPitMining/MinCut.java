@@ -48,7 +48,7 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 					vGraph.addEdge(currentEdgeId, each, S, 0);
 					currentEdgeId++;
 				}
-				else {
+				/*else {
 					rGraph.addEdge(currentEdgeId, S, each, 0);
 					vGraph.addEdge(currentEdgeId, S, each, 0);
 					currentEdgeId++;
@@ -61,7 +61,7 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 					rGraph.addEdge(currentEdgeId, T, each, 0);
 					vGraph.addEdge(currentEdgeId, T, each, 0);
 					currentEdgeId++;
-				}
+				}*/
 			}
 			
 		}
@@ -72,7 +72,7 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 		
 		
 		System.out.println("debut");
-		
+		int maxFlow = 0;
 		Map<Cell, Cell> parents = new HashMap<Cell, Cell>();
 		
 		while(rGraph.areConnected(rGraph, S, T, parents)==true) {  // tant qu'il y a un chemin
@@ -95,7 +95,7 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 	 		}
 	 		
 	 		
-	 		//System.out.println("pathflow="+pathFlow);
+	 		maxFlow += pathFlow;
 	 		
 	 		
 	 		Cell ite = T;
@@ -118,6 +118,8 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 	         
 			
 		}
+		
+		System.out.println("maxFlow="+maxFlow);
 		
 		System.out.println("fin");
 		
