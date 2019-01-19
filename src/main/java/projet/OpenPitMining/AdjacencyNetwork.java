@@ -55,8 +55,8 @@ public class AdjacencyNetwork<Vertex,Edge> {
 	}
 
 	public int getWeight(Edge e) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return edges.get(e);
 	}
 	
 	public void setWeight(Edge e, int i) {

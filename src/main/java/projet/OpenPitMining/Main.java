@@ -29,14 +29,28 @@ public class Main {
 		for(Cell each : res.getVertices()) {
 			
 			if((each.getR()==-1)&&each.getR()==-2) {  // verif si each n'est ni source ni sink sinon ->NullPointerException
-																	// il faut penser à implémenter un comparateur avec hascode pour utiliser equals
+																	
 				int profit = res.getProfit().get(each);
 				if(profit<0) {
 					res.addEdge(currentEdgeId, each, T, profit);
 					currentEdgeId++;
+					res.addEdge(currentEdgeId, T, each, 0);
+					currentEdgeId++;
 				}
 				else if(profit >0) {
 					res.addEdge(currentEdgeId, S, each, profit);
+					currentEdgeId++;
+					res.addEdge(currentEdgeId, each, S, 0);
+					currentEdgeId++;
+				}
+				else {
+					res.addEdge(currentEdgeId, S, each, profit);
+					currentEdgeId++;
+					res.addEdge(currentEdgeId, each, S, 0);
+					currentEdgeId++;
+					res.addEdge(currentEdgeId, each, T, profit);
+					currentEdgeId++;
+					res.addEdge(currentEdgeId, T, each, 0);
 					currentEdgeId++;
 				}
 			}
@@ -66,9 +80,6 @@ public class Main {
 			}
 		}
  		
- 		System.out.println("x " + x);
- 		System.out.println("y " + y);
-
  		
  		Cell network[][] = new Cell[x][y];
 
@@ -88,7 +99,7 @@ public class Main {
 					network[line][j]=currentCell;
 				}
 		}
-		System.out.println(network.length);
+		
 		
 		int rows =GUI.maxRowMaxCol(res.getVertices())[0];
 		int columns =GUI.maxRowMaxCol(res.getVertices())[1];
@@ -172,8 +183,10 @@ public class Main {
 		GUI.setupCanvas(vGraph.getVertices(),900,900);
 		GUI.draw(vGraph);
 		GUI.drawNames(vGraph);
+		
+		
+		MinCut.mC(vGraph, rGraph);
 
-		//System.out.println(vGraph.getVertices().size());
 		//System.out.println(rGraph.getVertices().size()); // renvoie 2 de + car il y a S et T
 		
 		
