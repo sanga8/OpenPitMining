@@ -75,7 +75,7 @@ public class MinCut {
      // This array is filled by BFS and to store path 
      int[] parent = new int[graph.length];  
        
-     // Augment the flow while tere is path from source to sink      
+     // Augment the flow while there is path from source to sink      
      while (bfs(rGraph, s, t, parent)) { 
            
          // Find minimum residual capacity of the edhes  
@@ -84,7 +84,7 @@ public class MinCut {
          int pathFlow = Integer.MAX_VALUE;          
          for (v = t; v != s; v = parent[v]) { 
              u = parent[v]; 
-             pathFlow = Math.min(pathFlow, rGraph[u][v]); 
+             pathFlow = Math.min(pathFlow, rGraph[u][v]); // selectionnne ledge de capacite minimale sur le chemin afin denvoyer ce flow
          } 
            
          // update residual capacities of the edges and  
@@ -124,27 +124,36 @@ public class MinCut {
  } 
 
 
- public static void main(String args[]) { 
-
-     int graph[][] = { 
-    		  {0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 11, 22, 2, 0}, //S
-			  
-			  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10},
-			  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5}, 
-			  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7}, 
-			  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4}, 
-			  {0, X, X, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10},
-			  {0, X, X, X, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11},
-			  {0, 0, X, X, X, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			  {0, 0, 0, X, X, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-			  {0, 0, 0, 0, 0, X, X, 0, 0, 0, 0, 0, 0, 0},
-			  {0, 0, 0, 0, 0, X, X, X, 0, 0, 0, 0, 0, 0},
-			  {0, 0, 0, 0, 0, 0, X, X, X, 0, 0, 0, 0, 0},
-			  {0, 0, 0, 0, 0, 0, 0, X, X, 0, 0, 0, 0, 0},
-			    
-			  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}// T
-         }; 
-     minCut(graph, 0, V-1); 
-     
- } 
+ public void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Cell,Integer> rGraph) {
+		
+		Cell S = new Cell(-1,0);
+		Cell T = new Cell(-2,0);
+		rGraph.addVertex(S);
+		rGraph.addVertex(T);
+		
+		int currentEdgeId = 0;
+		
+		for(Cell each : rGraph.getVertices()) {
+			
+			if((each.getR()==-1)&&each.getR()==-2) {  // verif si each n'est ni source ni sink sinon ->NullPointerException
+																	// il faut penser à implémenter un comparateur avec hascode pour utiliser equals
+				int profit = rGraph.getProfit().get(each);
+				if(profit<0) {
+					rGraph.addEdge(currentEdgeId, each, T, profit);
+					currentEdgeId++;
+				}
+				else if(profit >0) {
+					rGraph.addEdge(currentEdgeId, S, each, profit);
+					currentEdgeId++;
+				}
+			}
+			
+		}
+		
+		//
+		
+		while(rGraph.areConnected(S,T)) {
+			
+		}
+	}
 } 

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Set;
 
 public class AdjacencyNetwork<Vertex,Edge> {
@@ -63,60 +64,90 @@ public class AdjacencyNetwork<Vertex,Edge> {
 		return new ArrayList<Edge>(edgeToSrc.keySet());
 	}
 
-	public List<Vertex> getAdjacentVertices(Vertex v) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Vertex> getAdjacentVertices(Vertex src) {
+		List<Vertex> res = new ArrayList<Vertex>();
+		for (Edge e : vertexToEdges.get(src)) {
+			res.add(edgeToDest.get(e));
+		}
+		return res;
 	}
 
-	public void nameVertex(String name, Vertex v) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public Vertex getVertexByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getNameOrNullByVertex(Vertex v) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<String> getNames() {
-		// TODO Auto-generated method stub
-		return null;
+	public int distParent(Vertex parent,Vertex v) {
+		for(Edge each: vertexToEdges.get(parent)) {
+    		if(edgeToDest.get(each).equals(v)) {
+    			return getWeight(each);
+    		}
+    	}
+		return 0;
 	}
 
 	public boolean areConnected(Vertex src, Vertex dest) {
-		// TODO Auto-generated method stub
+		List<Vertex> toDo = new ArrayList<Vertex>();
+		List<Vertex> done = new ArrayList<Vertex>();
+		toDo.add(src);
+		while (!toDo.isEmpty()) {
+			Vertex v = toDo.get(0);
+			toDo.remove(0);
+			done.add(v);
+			for (Vertex each : getAdjacentVertices(v)) {
+				if (v.equals(dest)) {
+					return true;
+				}
+				if (!done.contains(each)) {
+					toDo.add(each);
+				}
+			}
+		}
 		return false;
 	}
 
-	public boolean areConnected(String src, String dest) {
-		// TODO Auto-generated method stub
-		return false;
+public List<Vertex> ShortestPath(Vertex src, Vertex dest) {
+		
+		List<Vertex> visited = new ArrayList<Vertex>();
+		Map<Vertex, Vertex> parents = new HashMap<Vertex, Vertex>();
+		Map<Vertex,Integer> vertexWeight = new HashMap<Vertex, Integer>();
+		//Map<Vertex,Integer> distances = new HashMap<>();
+		//Map<Vertex,Integer> heuristic = new HashMap<>();
+    	PriorityQueue<Vertex> toVisit = new PriorityQueue<Vertex>(new Comparateur(vertexWeight));
+    	
+    	for (Vertex each:vertices) {
+    		vertexWeight.put(each,Integer.MAX_VALUE);
+        }
+    	
+    	vertexWeight.put(src, 0);
+		toVisit.add(src);
+		parents.put(src, null);
+		
+		List<Vertex> path = new ArrayList<Vertex>();
+		int dist =0;
+		
+		while (!toVisit.isEmpty()) {
+			Vertex v = toVisit.poll();
+			visited.add(v);
+			
+			for (Vertex each : getAdjacentVertices(v)) {
+				
+				if (!visited.contains(each)) {
+					
+					dist=vertexWeight.get(v)+distParent(v,each);
+					if(vertexWeight.get(each)>dist) {
+						vertexWeight.put(each, dist);
+						parents.put(each, v);
+					}
+					toVisit.add(each);
+				}
+			}
+			
+		}
+		Vertex iter = dest;
+		while (iter != null) {
+			path.add(iter);
+			iter = parents.get(iter);
+		}
+		return path;
 	}
 
-	public List<Vertex> shortestPath(Vertex src, Vertex dest) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	public List<Vertex> shortestPath(String src, String dest) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Collection<Vertex>> PathAndVisited(Vertex src, Vertex dest) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Collection<Vertex>> PathAndVisited(String src, String dest) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	public boolean vContains(Vertex v) {
 		for (Vertex a : vertices) {
@@ -126,6 +157,8 @@ public class AdjacencyNetwork<Vertex,Edge> {
 		}
 		return false;
 	}
+	
+	
 
 	
 }

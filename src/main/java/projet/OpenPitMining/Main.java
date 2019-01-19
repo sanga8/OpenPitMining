@@ -88,7 +88,7 @@ public class Main {
 					network[line][j]=currentCell;
 				}
 		}
-		
+		System.out.println(network.length);
 		
 		int rows =GUI.maxRowMaxCol(res.getVertices())[0];
 		int columns =GUI.maxRowMaxCol(res.getVertices())[1];
