@@ -125,7 +125,7 @@ public class MinCut {
  } 
 
 
- public void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Cell,Integer> rGraph) {
+ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Cell,Integer> rGraph) {
 		
 		Cell S = new Cell(-1,0);
 		Cell T = new Cell(-2,0);
@@ -170,23 +170,19 @@ public class MinCut {
 	 			
 	 			for(int each: rGraph.vertexToEdges.get(path.get(ite))) {
 	 	    		if(rGraph.edgeToDest.get(each).equals(ite)) {
-	 	    			// mettre a jour
+	 	    			rGraph.setWeight(each, -pathFlow);  // enleve pathFlow
 	 	    		}
 	 	    	}
 	 			
 	 			for(int each: rGraph.vertexToEdges.get(ite)) {
 	 	    		if(rGraph.edgeToSrc.get(each).equals(path.get(ite))) {
-	 	    			// mettre a jour
+	 	    			rGraph.setWeight(each, pathFlow);   // ajoute pathFlow
 	 	    		}
 	 	    	}
 	 			
 	 			ite = path.get(ite);
 	 		}
-	 		
-	             rGraph[u][v] = rGraph[u][v] - pathFlow; 
-	             rGraph[v][u] = rGraph[v][u] + pathFlow; 
 	         
-			
 			
 		}
 	}
