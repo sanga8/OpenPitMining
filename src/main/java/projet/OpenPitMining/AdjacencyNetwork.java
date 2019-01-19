@@ -203,7 +203,7 @@ public class AdjacencyNetwork<Vertex,Edge> {
         return false;
     }
 	
-	public boolean areConnected(Vertex src, Vertex dest) {
+	public boolean connexion(Vertex src, Vertex dest) {
 		   
         List<Vertex> visited = new ArrayList<Vertex>();
         Queue<Vertex> toVisit = new LinkedList<Vertex>();
