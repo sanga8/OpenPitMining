@@ -1,6 +1,7 @@
 package projet.OpenPitMining;
 
 
+import java.util.HashMap;
 //Java program for finding min-cut in the given graph 
 import java.util.LinkedList; 
 import java.util.Queue; 
@@ -152,7 +153,18 @@ public class MinCut {
 		
 		//
 		
-		while(rGraph.areConnected(S,T)) {
+		while(rGraph.areConnected(S,T)) {  // tant qu'il y a un chemin
+			
+			HashMap<Cell,Cell> path = (HashMap<Cell, Cell>) rGraph.ShortestPath(S, T); //chemin
+			
+			int pathFlow = Integer.MAX_VALUE;          
+
+	        Cell iter = T;
+	 		while (iter != null) {
+	 			pathFlow = Math.min(pathFlow, rGraph[u][v]); // selectionnne ledge de capacite minimale sur le chemin afin denvoyer ce flow
+	 			
+	 		}
+			
 			
 		}
 	}

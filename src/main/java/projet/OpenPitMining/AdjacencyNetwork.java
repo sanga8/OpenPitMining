@@ -101,10 +101,11 @@ public class AdjacencyNetwork<Vertex,Edge> {
 		return false;
 	}
 
-public List<Vertex> ShortestPath(Vertex src, Vertex dest) {
+public Map<Vertex,Vertex> ShortestPath(Vertex src, Vertex dest) {
 		
 		List<Vertex> visited = new ArrayList<Vertex>();
 		Map<Vertex, Vertex> parents = new HashMap<Vertex, Vertex>();
+		Map<Vertex, Vertex> pathParents = new HashMap<Vertex, Vertex>();
 		Map<Vertex,Integer> vertexWeight = new HashMap<Vertex, Integer>();
 		//Map<Vertex,Integer> distances = new HashMap<>();
 		//Map<Vertex,Integer> heuristic = new HashMap<>();
@@ -139,12 +140,14 @@ public List<Vertex> ShortestPath(Vertex src, Vertex dest) {
 			}
 			
 		}
+		
 		Vertex iter = dest;
 		while (iter != null) {
 			path.add(iter);
+			pathParents.put(iter, parents.get(iter));
 			iter = parents.get(iter);
 		}
-		return path;
+		return pathParents;
 	}
 
 
