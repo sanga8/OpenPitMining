@@ -177,14 +177,15 @@ public class Main {
 		
 		graphs = read("test.txt");
 		AdjacencyNetwork<Cell, Integer> vGraph = graphs.get(0);
+		AdjacencyNetwork<Cell, Integer> rGraph = graphs.get(1);
 		
-		AdjacencyNetwork<Cell, Integer> rGraph = construct(graphs.get(1));
+		//AdjacencyNetwork<Cell, Integer> rGraph = construct(graphs.get(1));
 		
 		GUI.setupCanvas(vGraph.getVertices(),900,900);
 		GUI.draw(vGraph);
 		GUI.drawNames(vGraph);
 		
-		
+		System.out.println("efffffffffffffffffffffffff");
 		MinCut.mC(vGraph, rGraph);
 
 		//System.out.println(rGraph.getVertices().size()); // renvoie 2 de + car il y a S et T

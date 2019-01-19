@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Set;
 
 public class AdjacencyNetwork<Vertex,Edge> {
@@ -17,6 +19,7 @@ public class AdjacencyNetwork<Vertex,Edge> {
 	protected Map<Edge, Vertex> edgeToSrc = new HashMap<Edge, Vertex>();
 	protected Map<Edge, Vertex> edgeToDest = new HashMap<Edge, Vertex>();
 	protected Map<Edge,Integer> edges = new HashMap<Edge,Integer>();
+	protected Map<Edge,Integer> edgesFlow = new HashMap<Edge,Integer>();
 
 	public void addVertex(Vertex v) {
 		if (!vertices.contains(v)) {
@@ -86,27 +89,35 @@ public class AdjacencyNetwork<Vertex,Edge> {
 		return 0;
 	}
 
-	public boolean areConnected(Vertex src, Vertex dest) {
-		List<Vertex> toDo = new ArrayList<Vertex>();
-		List<Vertex> done = new ArrayList<Vertex>();
-		toDo.add(src);
-		while (!toDo.isEmpty()) {
-			Vertex v = toDo.get(0);
-			toDo.remove(0);
-			done.add(v);
-			for (Vertex each : getAdjacentVertices(v)) {
-				if (v.equals(dest)) {
-					return true;
-				}
-				if (!done.contains(each)) {
-					toDo.add(each);
-				}
-			}
-		}
-		return false;
-	}
-
-public Map<Vertex,Vertex> ShortestPath(Vertex src, Vertex dest) {
+	/*protected List<Integer> getPath(Vertex src, Vertex t, AdjacencyNetwork<Vertex,Edge> rGraph) {
+		
+        Queue<Vertex> toProcess = new LinkedList<Vertex>();
+        Map<Vertex, Vertex> previousV = new HashMap<Vertex, Vertex>();
+        Vertex visiting = src;
+        toProcess.add(src);
+        previousV.put(src, null);
+        
+        while (!visiting.equals(t) && !toProcess.isEmpty()) {
+            visiting = toProcess.remove();
+            for (Vertex v : rGraph.getAdjacentVertices(visiting)) {
+                if (!previousV.containsKey(v) && !toProcess.contains(v) && flow.get(rGraph.getEdge(visiting, v)) > 0) {
+                    toProcess.add(v);
+                    previousV.put(v, visiting);
+                }
+            }
+        }
+        
+        List<Integer> path = new ArrayList<Integer>();
+        if (visiting.equals(t)) {
+            Vertex v = t;
+            while (previousV.get(v) != null) {
+                path.add(rGraph.getEdge(previousV.get(v), v));
+                v = previousV.get(v);
+            } return path;
+        } return null;
+    }*/
+	
+	public Map<Vertex,Vertex> finPath(Vertex src, Vertex dest) {
 		
 		List<Vertex> visited = new ArrayList<Vertex>();
 		Map<Vertex, Vertex> parents = new HashMap<Vertex, Vertex>();
@@ -114,7 +125,7 @@ public Map<Vertex,Vertex> ShortestPath(Vertex src, Vertex dest) {
 		Map<Vertex,Integer> vertexWeight = new HashMap<Vertex, Integer>();
 		//Map<Vertex,Integer> distances = new HashMap<>();
 		//Map<Vertex,Integer> heuristic = new HashMap<>();
-    	PriorityQueue<Vertex> toVisit = new PriorityQueue<Vertex>(new Comparateur(vertexWeight));
+		Queue<Vertex> toVisit = new LinkedList<Vertex>();
     	
     	for (Vertex each:vertices) {
     		vertexWeight.put(each,Integer.MAX_VALUE);
@@ -123,17 +134,18 @@ public Map<Vertex,Vertex> ShortestPath(Vertex src, Vertex dest) {
     	vertexWeight.put(src, 0);
 		toVisit.add(src);
 		parents.put(src, null);
+		Vertex v = src;
 		
 		List<Vertex> path = new ArrayList<Vertex>();
 		int dist =0;
 		
-		while (!toVisit.isEmpty()) {
-			Vertex v = toVisit.poll();
+		while (!toVisit.isEmpty() ) {
+			v = toVisit.poll();
 			visited.add(v);
 			
 			for (Vertex each : getAdjacentVertices(v)) {
 				
-				if (!visited.contains(each)) {
+				if (!visited.contains(each) ) {
 					
 					dist=vertexWeight.get(v)+distParent(v,each);
 					if(vertexWeight.get(each)>dist) {
@@ -146,16 +158,95 @@ public Map<Vertex,Vertex> ShortestPath(Vertex src, Vertex dest) {
 			
 		}
 		
-		Vertex iter = dest;
-		while (iter != null) {
-			path.add(iter);
-			pathParents.put(iter, parents.get(iter));
-			iter = parents.get(iter);
+		if(parents.containsKey(dest)) {
+			Vertex iter = dest;
+			while (iter != null) {
+				path.add(iter);
+				pathParents.put(iter, parents.get(iter));
+				iter = parents.get(iter);
+			}
+			return pathParents;
 		}
-		return pathParents;
+		return null;
+		
+		
 	}
+	
 
-
+	public Map<Vertex,Vertex> ShortestPath(Vertex src, Vertex dest) {
+		
+		List<Vertex> visited = new ArrayList<Vertex>();
+		Map<Vertex, Vertex> parents = new HashMap<Vertex, Vertex>();
+		Map<Vertex, Vertex> pathParents = new HashMap<Vertex, Vertex>();
+		Map<Vertex,Integer> vertexWeight = new HashMap<Vertex, Integer>();
+		//Map<Vertex,Integer> distances = new HashMap<>();
+		//Map<Vertex,Integer> heuristic = new HashMap<>();
+    	PriorityQueue<Vertex> toVisit = new PriorityQueue<Vertex>(new Comparateur<Object, Map<Vertex, Integer>>(vertexWeight));
+    	
+    	for (Vertex each:vertices) {
+    		vertexWeight.put(each,Integer.MAX_VALUE);
+        }
+    	
+    	vertexWeight.put(src, 0);
+		toVisit.add(src);
+		parents.put(src, null);
+		Vertex v = src;
+		
+		List<Vertex> path = new ArrayList<Vertex>();
+		int dist =0;
+		
+		while (!toVisit.isEmpty() ) {
+			v = toVisit.poll();
+			visited.add(v);
+			
+			for (Vertex each : getAdjacentVertices(v)) {
+				
+				if (!visited.contains(each) ) {
+					
+					dist=vertexWeight.get(v)+distParent(v,each);
+					if(vertexWeight.get(each)>dist) {
+						vertexWeight.put(each, dist);
+						parents.put(each, v);
+					}
+					toVisit.add(each);
+				}
+			}
+			
+		}
+		
+		if(parents.containsKey(dest)) {
+			Vertex iter = dest;
+			while (iter != null) {
+				path.add(iter);
+				pathParents.put(iter, parents.get(iter));
+				iter = parents.get(iter);
+			}
+			return pathParents;
+		}
+		return null;
+		
+		
+	}
+	
+	public boolean areConnected(Vertex src, Vertex dest) {
+        List<Vertex> toDo = new ArrayList<Vertex>();
+        List<Vertex> done = new ArrayList<Vertex>();
+        toDo.add(src);
+        while (!toDo.isEmpty()) {
+            Vertex v = toDo.get(0);
+            toDo.remove(0);
+            done.add(v);
+            for (Vertex each : getAdjacentVertices(v)) {
+                if (v.equals(dest)) {
+                    return true;
+                }
+                if (!done.contains(each)) {
+                    toDo.add(each);
+                }
+            }
+        }
+        return false;
+    }
 	
 	public boolean vContains(Vertex v) {
 		for (Vertex a : vertices) {

@@ -18,14 +18,20 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 		rGraph.addVertex(S);
 		rGraph.addVertex(T);
 		
-		int currentEdgeId = 0;
+		System.out.println("efffffffffffffffffffffffff");
+		
+		
+		int currentEdgeId = rGraph.getEdges().size();
 		
 		for(Cell each : rGraph.getVertices()) {
 			
-			if((each.getR()==-1)&&each.getR()==-2) {  // verif si each n'est ni source ni sink sinon ->NullPointerException
+			if((each.getR()!=-1)&&each.getR()!=-2) {  // verif si each n'est ni source ni sink sinon ->NullPointerException
 																	// il faut penser à implémenter un comparateur avec hascode pour utiliser equals
 				int profit = rGraph.getProfit().get(each);
+				
 				if(profit<0) {
+					System.out.println(each.getR()+";"+each.getC());
+					System.out.println(profit);
 					rGraph.addEdge(currentEdgeId, each, T, profit);
 					currentEdgeId++;
 					rGraph.addEdge(currentEdgeId, T, each, 0);
@@ -37,7 +43,7 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 					rGraph.addEdge(currentEdgeId, each, S, 0);
 					currentEdgeId++;
 				}
-				else {
+				/*else {
 					rGraph.addEdge(currentEdgeId, S, each, profit);
 					currentEdgeId++;
 					rGraph.addEdge(currentEdgeId, each, S, 0);
@@ -46,27 +52,32 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 					currentEdgeId++;
 					rGraph.addEdge(currentEdgeId, T, each, 0);
 					currentEdgeId++;
-				}
+				}*/
 			}
 			
 		}
+	
 		
-		//
+		HashMap<Cell,Cell> path = new HashMap<Cell,Cell>();
+		//System.out.println(path);
 		
-		while(rGraph.areConnected(S,T)) {  // tant qu'il y a un chemin
+		while((path = (HashMap<Cell, Cell>) rGraph.ShortestPath(S, T))!=null) {  // tant qu'il y a un chemin
 			
-			HashMap<Cell,Cell> path = (HashMap<Cell, Cell>) rGraph.ShortestPath(S, T); //chemin
+			
 			
 			int pathFlow = Integer.MAX_VALUE;          
 
 	        Cell iter = T;
-	 		while (iter != null) {
+	 		while (path.get(iter) != null) {
+	 			System.out.println(iter.getR()+";"+iter.getC());
 	 			pathFlow = Math.min(pathFlow, rGraph.distParent(path.get(iter), iter)); // selectionnne ledge de capacite minimale sur le chemin afin denvoyer ce flow
 	 			iter = path.get(iter);
 	 		}
 	 		
+	 		System.out.println("pathflow="+pathFlow);
+	 		
 	 		Cell ite = T;
-	 		while (ite != null) {
+	 		while (path.get(ite) != null) {
 	 			
 	 			for(int each: rGraph.vertexToEdges.get(path.get(ite))) {
 	 	    		if(rGraph.edgeToDest.get(each).equals(ite)) {
@@ -85,6 +96,8 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 	         
 			
 		}
+		
+		System.out.println("---");
 		
 		int allProfit = 0;
 		
@@ -107,7 +120,7 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 			
 			List<Cell> reachable = new ArrayList<Cell>();
 			isVisited.put(each, rGraph.areConnected(S, each));
-			System.out.println(rGraph.areConnected(S, each));
+			
 		}
 		
 		for(int each : rGraph.getEdges()) {

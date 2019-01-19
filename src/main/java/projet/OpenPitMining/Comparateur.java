@@ -9,10 +9,10 @@ public class Comparateur<V,T> implements Comparator<V>{
 		this.toCompare = toCompare;
 	}
 	public int compare(V o1, V o2) {
-		if (  ((Integer)((HashMap)toCompare).get(o1))  >  ((Integer)((HashMap)toCompare).get(o2))) {
+		if (  Math.abs(((Integer)((HashMap)toCompare).get(o1)))  >  Math.abs(((Integer)((HashMap)toCompare).get(o2)))) {
 			return 1;
 		}
-		else if (((Integer)((HashMap)toCompare).get(o1))  <=  ((Integer)((HashMap)toCompare).get(o2))) {
+		else if (Math.abs(((Integer)((HashMap)toCompare).get(o1)))  <=  Math.abs(((Integer)((HashMap)toCompare).get(o2)))) {
 			return -1;
 		}
 		return 0;
