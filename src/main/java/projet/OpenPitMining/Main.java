@@ -16,50 +16,6 @@ import edu.princeton.cs.introcs.StdDraw;
 
 public class Main {
 	
-	private static AdjacencyNetwork<Cell, Integer> construct(AdjacencyNetwork<Cell, Integer> res) throws IOException{
-		
-		
-		Cell S = new Cell(-1,0);
-		Cell T = new Cell(-2,0);
-		res.addVertex(S);
-		res.addVertex(T);
-		
-		int currentEdgeId = 0;
-		
-		for(Cell each : res.getVertices()) {
-			
-			if((each.getR()==-1)&&each.getR()==-2) {  // verif si each n'est ni source ni sink sinon ->NullPointerException
-																	
-				int profit = res.getProfit().get(each);
-				if(profit<0) {
-					res.addEdge(currentEdgeId, each, T, profit);
-					currentEdgeId++;
-					res.addEdge(currentEdgeId, T, each, 0);
-					currentEdgeId++;
-				}
-				else if(profit >0) {
-					res.addEdge(currentEdgeId, S, each, profit);
-					currentEdgeId++;
-					res.addEdge(currentEdgeId, each, S, 0);
-					currentEdgeId++;
-				}
-				else {
-					res.addEdge(currentEdgeId, S, each, profit);
-					currentEdgeId++;
-					res.addEdge(currentEdgeId, each, S, 0);
-					currentEdgeId++;
-					res.addEdge(currentEdgeId, each, T, profit);
-					currentEdgeId++;
-					res.addEdge(currentEdgeId, T, each, 0);
-					currentEdgeId++;
-				}
-			}
-			
-		}
-		
-		return res;
-		
-	}
 
 	private static List<AdjacencyNetwork<Cell, Integer>> read(String is) throws IOException {
 		
@@ -111,51 +67,23 @@ public class Main {
 				//System.out.println(i);
 				//System.out.println(j);
 				if(j==0 ) {   //premiere
-					res.addEdge(currentEdgeId, network[i][j], network[i-1][j], Integer.MAX_VALUE);
-					v2.addEdge(currentEdgeId, network[i][j], network[i-1][j], Integer.MAX_VALUE);
+					res.addEdge(currentEdgeId, network[i][j], network[i-1][j]);
 					currentEdgeId++;
-					res.addEdge(currentEdgeId,  network[i-1][j], network[i][j], 0);
-					v2.addEdge(currentEdgeId, network[i-1][j], network[i][j],  0);
-					currentEdgeId++;
-					res.addEdge(currentEdgeId, network[i][j], network[i-1][j+1], Integer.MAX_VALUE);
-					v2.addEdge(currentEdgeId, network[i][j], network[i-1][j+1], Integer.MAX_VALUE);
-					currentEdgeId++;
-					res.addEdge(currentEdgeId, network[i-1][j+1], network[i][j], 0);
-					v2.addEdge(currentEdgeId, network[i-1][j+1], network[i][j], 0);
+					res.addEdge(currentEdgeId, network[i][j], network[i-1][j+1]);
 					currentEdgeId++;
 				}
 				else if (j==columns) { //derniere
-					res.addEdge(currentEdgeId, network[i][j], network[i-1][j], Integer.MAX_VALUE);
-					v2.addEdge(currentEdgeId, network[i][j], network[i-1][j], Integer.MAX_VALUE);
+					res.addEdge(currentEdgeId, network[i][j], network[i-1][j]);
 					currentEdgeId++;
-					res.addEdge(currentEdgeId, network[i-1][j], network[i][j], 0);
-					v2.addEdge(currentEdgeId,  network[i-1][j], network[i][j], 0);
-					currentEdgeId++;
-					res.addEdge(currentEdgeId, network[i][j], network[i-1][j-1], Integer.MAX_VALUE);
-					v2.addEdge(currentEdgeId, network[i][j], network[i-1][j-1], Integer.MAX_VALUE);
-					currentEdgeId++;
-					res.addEdge(currentEdgeId, network[i-1][j-1], network[i][j], 0);
-					v2.addEdge(currentEdgeId, network[i-1][j-1], network[i][j], 0);
+					res.addEdge(currentEdgeId, network[i][j], network[i-1][j-1]);
 					currentEdgeId++;
 				}
 				else {// ni premiere ni derniere colonne
-					res.addEdge(currentEdgeId, network[i][j], network[i-1][j], Integer.MAX_VALUE);
-					v2.addEdge(currentEdgeId, network[i][j], network[i-1][j], Integer.MAX_VALUE);
+					res.addEdge(currentEdgeId, network[i][j], network[i-1][j]);
 					currentEdgeId++;
-					res.addEdge(currentEdgeId, network[i-1][j], network[i][j], 0);
-					v2.addEdge(currentEdgeId, network[i-1][j], network[i][j], 0);
+					res.addEdge(currentEdgeId, network[i][j], network[i-1][j-1]);
 					currentEdgeId++;
-					res.addEdge(currentEdgeId, network[i][j], network[i-1][j-1], Integer.MAX_VALUE);
-					v2.addEdge(currentEdgeId, network[i][j], network[i-1][j-1], Integer.MAX_VALUE);
-					currentEdgeId++;
-					res.addEdge(currentEdgeId, network[i-1][j-1], network[i][j], 0);
-					v2.addEdge(currentEdgeId, network[i-1][j-1], network[i][j], 0);
-					currentEdgeId++;
-					res.addEdge(currentEdgeId, network[i][j], network[i-1][j+1], Integer.MAX_VALUE);
-					v2.addEdge(currentEdgeId, network[i][j], network[i-1][j+1], Integer.MAX_VALUE);
-					currentEdgeId++;
-					res.addEdge(currentEdgeId, network[i-1][j+1], network[i][j], 0);
-					v2.addEdge(currentEdgeId, network[i-1][j+1], network[i][j], 0);
+					res.addEdge(currentEdgeId, network[i][j], network[i-1][j+1]);
 					currentEdgeId++;
 				}
 			}
@@ -179,7 +107,6 @@ public class Main {
 		AdjacencyNetwork<Cell, Integer> vGraph = graphs.get(0);
 		AdjacencyNetwork<Cell, Integer> rGraph = graphs.get(1);
 		
-		//AdjacencyNetwork<Cell, Integer> rGraph = construct(graphs.get(1));
 		
 		GUI.setupCanvas(vGraph.getVertices(),900,900);
 		GUI.draw(vGraph);
@@ -187,7 +114,6 @@ public class Main {
 				
 		MinCut.mC(vGraph, rGraph);
 
-		//System.out.println(rGraph.getVertices().size()); // renvoie 2 de + car il y a S et T
 		
 		
 

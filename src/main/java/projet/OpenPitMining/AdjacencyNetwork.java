@@ -18,8 +18,7 @@ public class AdjacencyNetwork<Vertex,Edge> {
 	protected Map<Vertex, List<Edge>> vertexToEdges = new HashMap<Vertex, List<Edge>>();
 	protected Map<Edge, Vertex> edgeToSrc = new HashMap<Edge, Vertex>();
 	protected Map<Edge, Vertex> edgeToDest = new HashMap<Edge, Vertex>();
-	protected Map<Edge,Integer> edges = new HashMap<Edge,Integer>();
-	protected Map<Edge,Integer> edgesFlow = new HashMap<Edge,Integer>();
+	protected Set<Edge> edges = new HashSet<Edge>();
 
 	public void addVertex(Vertex v) {
 		if (!vertices.contains(v)) {
@@ -33,8 +32,9 @@ public class AdjacencyNetwork<Vertex,Edge> {
 
 	}
 
-	public Map<Vertex, Integer> getProfit() {
-		return profit;
+	
+	public Integer getProfit(Vertex v) {
+		return profit.get(v);
 	}
 
 	public void setProfit(Map<Vertex, Integer> profit) {
@@ -46,30 +46,39 @@ public class AdjacencyNetwork<Vertex,Edge> {
 		return new ArrayList<Vertex>(vertices);
 	}
 
-	public void addEdge(Edge e, Vertex src, Vertex dest, Integer weight) {
-		
-		//addVertex(src);
-		//addVertex(dest);
-		edgeToSrc.put(e, src);
-		edgeToDest.put(e, dest);
-		vertexToEdges.get(src).add(e);
-		edges.put(e,weight);
-		
-	}
-
-	public int getWeight(Edge e) {
-		
-		return edges.get(e);
+	public void addEdge(Edge e, Vertex src, Vertex dest) {
+		addVertex(src);
+		if (dest != null) {
+			addVertex(dest);
+			edges.add(e);
+			edgeToSrc.put(e, src);
+			edgeToDest.put(e, dest);
+			vertexToEdges.get(src).add(e);
+		}
 	}
 	
-	public void setWeight(Edge e, int i) {
-		// TODO Auto-generated method stub
-		edges.put(e, edges.get(e)+i);
+	public void addEdgeMf(Edge e, Vertex src, Vertex dest) {
+		addVertex(src);
+		addVertex(dest);
+		if(getEdge(src,dest) == null) {
+			edges.add(e);
+			edgeToSrc.put(e, src);
+			edgeToDest.put(e, dest);
+			vertexToEdges.get(src).add(e);
+		}
+		
 	}
+	
 
 	public List<Edge> getEdges() {
-
-		return new ArrayList<Edge>(edgeToSrc.keySet());
+		return new ArrayList<Edge>(edges);
+	}
+	
+	public Edge getEdge(Vertex v1, Vertex v2) {
+		for(Edge e: vertexToEdges.get(v1)) {
+			if(edgeToDest.get(e).equals(v2))
+				return e;
+		}return null;
 	}
 
 	public List<Vertex> getAdjacentVertices(Vertex src) {
@@ -80,45 +89,8 @@ public class AdjacencyNetwork<Vertex,Edge> {
 		return res;
 	}
 
-	public int distParent(Vertex parent,Vertex v) {
-		for(Edge each: vertexToEdges.get(parent)) {
-    		if(edgeToDest.get(each).equals(v)) {
-    			return getWeight(each);
-    		}
-    	}
-		return 0;
-	}
 
-	/*protected List<Integer> getPath(Vertex src, Vertex t, AdjacencyNetwork<Vertex,Edge> rGraph) {
-		
-        Queue<Vertex> toProcess = new LinkedList<Vertex>();
-        Map<Vertex, Vertex> previousV = new HashMap<Vertex, Vertex>();
-        Vertex visiting = src;
-        toProcess.add(src);
-        previousV.put(src, null);
-        
-        while (!visiting.equals(t) && !toProcess.isEmpty()) {
-            visiting = toProcess.remove();
-            for (Vertex v : rGraph.getAdjacentVertices(visiting)) {
-                if (!previousV.containsKey(v) && !toProcess.contains(v) && flow.get(rGraph.getEdge(visiting, v)) > 0) {
-                    toProcess.add(v);
-                    previousV.put(v, visiting);
-                }
-            }
-        }
-        
-        List<Integer> path = new ArrayList<Integer>();
-        if (visiting.equals(t)) {
-            Vertex v = t;
-            while (previousV.get(v) != null) {
-                path.add(rGraph.getEdge(previousV.get(v), v));
-                v = previousV.get(v);
-            } return path;
-        } return null;
-    }*/
-	
-
-	public Map<Vertex,Vertex> ShortestPath(Vertex src, Vertex dest) {
+	/*public Map<Vertex,Vertex> ShortestPath(Vertex src, Vertex dest) {
 		
 		List<Vertex> visited = new ArrayList<Vertex>();
 		Map<Vertex, Vertex> parents = new HashMap<Vertex, Vertex>();
@@ -146,8 +118,8 @@ public class AdjacencyNetwork<Vertex,Edge> {
 			
 			for (Vertex each : getAdjacentVertices(v)) {
 				
-				System.out.println(getProfit().get(v));
-				System.out.println(getProfit().get(each));
+				System.out.println(getProfit(v));
+				System.out.println(getProfit(each));
 				System.out.println("distance "+distParent(v,each));
 				
 				if (!visited.contains(each) && distParent(v,each)>0 ) {
@@ -176,34 +148,41 @@ public class AdjacencyNetwork<Vertex,Edge> {
 		return null;
 		
 		
+	}*/
+	
+	public List<Integer> bfs(Map<Integer, Integer> f, Vertex src, Vertex t) {
+		Queue<Vertex> toProcess = new LinkedList<Vertex>();
+		Map<Vertex, Vertex> previousV = new HashMap<Vertex, Vertex>();
+		Vertex visiting = src;
+		toProcess.add(src);
+		previousV.put(src, null);
+
+		while (!visiting.equals(t) && !toProcess.isEmpty()) {
+			visiting = toProcess.remove();
+			for (Vertex v : getAdjacentVertices(visiting)) {
+				if (!previousV.containsKey(v) && !toProcess.contains(v) && f.get(getEdge(visiting, v)) > 0) {
+					toProcess.add(v);
+					previousV.put(v, visiting);
+				}
+
+			}
+		}
+
+		List<Integer> path = new ArrayList<Integer>();
+		if (visiting.equals(t)) {
+			Vertex v = t;
+			while (previousV.get(v) != null) {
+				path.add((Integer) getEdge(previousV.get(v), v));
+				v = previousV.get(v);
+			}
+
+			return path;
+
+		}
+		return null;
 	}
 	
-	public boolean areConnected(AdjacencyNetwork rGraph, Vertex src, Vertex dest,Map<Vertex, Vertex> parents) {
-   
-        List<Vertex> visited = new ArrayList<Vertex>();
-        Queue<Vertex> toVisit = new LinkedList<Vertex>();
-        
-        parents.put(src, null);
-        toVisit.add(src);
-        
-        while (!toVisit.isEmpty()) {
-            Vertex v = toVisit.poll();
-            visited.add(v);
-            for (Vertex each : getAdjacentVertices(v)) {
-               
-                if (!visited.contains(each) && distParent(v,each)>0) {
-                	toVisit.add(each);
-                	parents.put(each, v);
-                }
-            }
-        }
-        if(visited.contains(dest)) {
-        	return true;
-        }
-        return false;
-    }
-	
-	public boolean connexion(Vertex src, Vertex dest) {
+	/*public boolean connexion(Vertex src, Vertex dest) {
 		   
         List<Vertex> visited = new ArrayList<Vertex>();
         Queue<Vertex> toVisit = new LinkedList<Vertex>();
@@ -226,7 +205,7 @@ public class AdjacencyNetwork<Vertex,Edge> {
         	return true;
         }
         return false;
-    }
+    }*/
 	
 	public boolean vContains(Vertex v) {
 		for (Vertex a : vertices) {

@@ -32,7 +32,7 @@ public class GUI {
 	public static void drawNames(AdjacencyNetwork<Cell, Integer> maze) {
 		StdDraw.setPenColor(StdDraw.RED);
 		for (Cell c : maze.getVertices()) {
-			int intName = maze.getProfit().get(c);
+			int intName = maze.getProfit(c);
 			StdDraw.text(c.c, -c.r, String.valueOf(intName));
 		}
 			
