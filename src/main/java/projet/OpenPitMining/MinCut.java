@@ -11,7 +11,9 @@ import java.util.Queue;
 
 public class MinCut { 
 
-public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Cell,Integer> rGraph) {
+public static List<Cell> mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Cell,Integer> rGraph) {
+	
+		List<Cell> toEscavate = new ArrayList<Cell>();
 		
 		Map<Integer, Integer> flow = new HashMap<Integer, Integer>();
 		Map<Integer, Integer> residual = new HashMap<Integer, Integer>();
@@ -20,12 +22,12 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 		
 		for (Cell v : vGraph.getVertices()) {
 			
-			System.out.println("main "+v.getR()+";"+v.getC());
-			System.out.println("voisins");
+			//System.out.println("main "+v.getR()+";"+v.getC());
+			//System.out.println("voisins");
 			
 			for (Cell v2 : vGraph.getAdjacentVertices(v)) {
 				
-				System.out.println(v2.getR()+";"+v2.getC());
+				
 				edge = (int)(vGraph.getEdge(v, v2));
 				i1=currentEdgeId++;
 				rGraph.addEdgeMf(edge, v, v2);
@@ -84,15 +86,10 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 		List<Integer> path;
 		int maxFlow = 0;
 		
-		System.out.println("size "+rGraph.getVertices().size());
-		System.out.println("size "+rGraph.getEdges().size());
-		System.out.println("size "+flow.size());
-		System.out.println("size "+residual.size());
 		
 		while ((path = rGraph.bfs(flow, S, T)) != null) {  // tant qu'il y a un chemin
 			
-			System.out.println("jsuis dedans");
-			System.out.println(path.size());
+			
 			pathFlow = Integer.MAX_VALUE;
 			for (int e : path) {
 				
@@ -101,24 +98,18 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 			}
 
 			maxFlow += pathFlow;
-			System.out.println("max flow: " + maxFlow);
+			
 			
 			
 			for (int e : path) {
-				System.out.print((rGraph.edgeToDest.get(rGraph.getEdges().get(e))).getR());
-				System.out.print(";");
-				System.out.print((rGraph.edgeToDest.get(rGraph.getEdges().get(e))).getC());
-				System.out.println("");
-				System.out.println("avant"+flow.get(e));
 				flow.put(e, flow.get(e) - pathFlow);
-				System.out.println("apres"+flow.get(e));
 				flow.put(residual.get(e), flow.get(residual.get(e)) + pathFlow);
 			}
 	         
 			
 		}
 		
-		
+		System.out.println("max flow: " + maxFlow);
 		System.out.println("fin");
 		
 		int allProfit = 0;
@@ -131,8 +122,6 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 				}
 			}
 			
-			
-			
 		}
 		
 		int mincut = 0;
@@ -140,34 +129,27 @@ public static void mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Ce
 		Map<Cell,Boolean> reachable = new HashMap<Cell,Boolean>();
 		
 		
-		/*for(Cell each : rGraph.getVertices()) {
+		for(Cell each : rGraph.getVertices()) {
 			
-			//if(!each.equals(S)) {
-				reachable.put(each, rGraph.connexion(S, each));
-			//}
-			
-			
+			if(!each.equals(S)) {
+				reachable.put(each, rGraph.connexion(flow, S, each));
+			}
+	
 		}
 		
-		for(int each : vGraph.getEdges()) {
-			
-			//System.out.println(vGraph.edgeToDest.get(each).getR()+";"+vGraph.edgeToDest.get(each).getC());
-			
-			if(vGraph.getWeight(each)>0 && reachable.get(rGraph.edgeToSrc.get(each))==true && reachable.get(rGraph.edgeToDest.get(each))==false) {
-				
-				System.out.println(vGraph.edgeToSrc.get(each).getR()+";"+vGraph.edgeToSrc.get(each).getC());
-				//System.out.println("poids "+vGraph.getWeight(each));
-				mincut += vGraph.getWeight(each);
-				
-				//System.out.println(mincut);
+		for(Cell each : reachable.keySet()) {
+			if(reachable.get(each)==true) {
+				System.out.println(each.getR()+";"+each.getC());
+				toEscavate.add(each);
 				
 			}
 		}
 		
-	     int maxprofit =allProfit-mincut;
+	     int maxprofit =allProfit-maxFlow;
+	     System.out.println("Le profit max est = "+maxprofit);
 	     
-	     System.out.println("La mincut"+mincut);
+	     return toEscavate;
 	     
-	     System.out.println("Le profit max est = "+maxprofit);*/
+	     
 	}
 } 

@@ -108,13 +108,13 @@ public class Main {
 		AdjacencyNetwork<Cell, Integer> rGraph = graphs.get(1);
 		
 		
-		GUI.setupCanvas(vGraph.getVertices(),900,900);
+		GUI.setupCanvas(vGraph.getVertices(),1200,900);
 		GUI.draw(vGraph);
-		GUI.drawNames(vGraph);
-				
-		MinCut.mC(vGraph, rGraph);
-
 		
+		List<Cell> toEscavate = new ArrayList<Cell>();
+		toEscavate=MinCut.mC(vGraph, rGraph);
+
+		GUI.play(vGraph, toEscavate);
 		
 
 	}

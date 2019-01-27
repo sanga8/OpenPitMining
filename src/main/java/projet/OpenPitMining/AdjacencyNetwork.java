@@ -182,30 +182,28 @@ public class AdjacencyNetwork<Vertex,Edge> {
 		return null;
 	}
 	
-	/*public boolean connexion(Vertex src, Vertex dest) {
+	public boolean connexion(Map<Integer, Integer> f, Vertex src, Vertex dest) {
 		   
         List<Vertex> visited = new ArrayList<Vertex>();
-        Queue<Vertex> toVisit = new LinkedList<Vertex>();
-        
-        
+        List<Vertex> toVisit = new ArrayList<Vertex>();
+
         toVisit.add(src);
         
         while (!toVisit.isEmpty()) {
-            Vertex v = toVisit.poll();
+            Vertex v = toVisit.remove(toVisit.size()-1);
             visited.add(v);
             for (Vertex each : getAdjacentVertices(v)) {
-               
-                if (!visited.contains(each) && distParent(v,each)>0) {
+            	
+                if (!visited.contains(each) && f.get(getEdge(v, each)) > 0) {  
+                	if(each.equals(dest)) {
+                		return true;
+                	}
                 	toVisit.add(each);
-                	
                 }
             }
         }
-        if(visited.contains(dest)) {
-        	return true;
-        }
         return false;
-    }*/
+    }
 	
 	public boolean vContains(Vertex v) {
 		for (Vertex a : vertices) {
