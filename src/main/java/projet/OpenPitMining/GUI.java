@@ -13,7 +13,9 @@ public class GUI {
 	private AdjacencyNetwork<Cell, Integer> graph;
 	private float X;
 	private float Y;
-
+	Font fontMinecraft = new Font("Minecraft Evenings",Font.BOLD,90);
+	Font fontMinecraftPetit = new Font("Minecraft Evenings",Font.ITALIC,20);
+	Font fontClassic = new Font("Libre Franklin",Font.BOLD,35);
 	public GUI(AdjacencyNetwork<Cell,Integer> graph) {
 		this.graph = graph;
 		setupCanvas(graph.getVertices(),1200,900);
@@ -28,42 +30,46 @@ public class GUI {
 		this.Y = (int) (nRowsNCols[0] + 0.5 + 0.5);
 		StdDraw.setXscale(-0.5, nRowsNCols[1] + 0.5+2);
 		StdDraw.setYscale(-(nRowsNCols[0] + 0.5), 0.5);
-		
+
 	}
 	
 	public void menu() {
-		
-		StdDraw.picture( -0.5+X/2,0.5-Y/2, "mur.png");
-		StdDraw.picture( -0.5+X/2,0.5-Y/2, "menu.png");
+		StdDraw.setFont(fontMinecraft);	
+		StdDraw.picture( -0.5+X/2,0.5-Y/2, "background.jpg");
+		StdDraw.text(-0.5+X/2 , 0.5-Y/3, "Open Pit Mining");
+		StdDraw.setFont(fontMinecraftPetit);	
+		StdDraw.text(-0.5+X/2 , 0.5-Y, "Made by Guillaume Dupont, Vincent Pauwels, Merlin Rousseau");
 		boolean menu = true;
-		
+
 		while (menu) {
-						
+
 			if (StdDraw.mousePressed()) {
 				Double x = StdDraw.mouseX(), y = StdDraw.mouseY();
 				StdDraw.clear();
 				menu=false;
 			}
-			
+
 		}
 	}
 	
 	public void draw() {
+		StdDraw.setFont(fontClassic);	
+		StdDraw.picture( -0.5+X/2,0.5-Y/2, "background.jpg");
 		// StdDraw.setPenRadius(0.01);
 		//StdDraw.enableDoubleBuffering();
 		List<Cell> cells = new ArrayList<Cell>();
 		cells = this.graph.getVertices();
 		int[] nRowsNCols = maxRowMaxCol(cells);
 		
-		StdDraw.setPenColor(Color.decode("#7CB342")); 
-		StdDraw.filledRectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/2, 0.3,0.1);
+
 		StdDraw.setPenColor(); 
-		StdDraw.rectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/2, 0.3,0.1);
-		StdDraw.text(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/2, "Solution");
+		StdDraw.rectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/4, 0.45,0.45);
+		StdDraw.picture(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/4, "pickaxe.png", 1,0.9);
 	
-		StdDraw.rectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/1.5, 0.3,0.1);
-		StdDraw.text(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/1.5, "Profit");
-		
+		StdDraw.rectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/7.2, 0.45,0.2);
+		StdDraw.picture(nRowsNCols[1]+1.7, -(nRowsNCols[0] + 0.5)/7.3, "coin.png",0.3,0.3);
+		int a = 0;
+		StdDraw.text(nRowsNCols[1]+2.15, -(nRowsNCols[0] + 0.5)/7,  String.valueOf(a));
 		
 		
 		int maxValue = 0;
@@ -150,8 +156,8 @@ public class GUI {
 		while (play) {
 			if (StdDraw.mousePressed()) {
 				Double x = StdDraw.mouseX(), y = StdDraw.mouseY();
-				
-				if(x>(nRowsNCols[1]+2-0.3)&&x<(nRowsNCols[1]+2+0.3) && y>-0.1&&y<0.1) {
+
+				if(x>(nRowsNCols[1]+2-0.3) && x<(nRowsNCols[1]+2+0.3) && y>-(nRowsNCols[0] + 0.5)/4-0.4&&y<-(nRowsNCols[0] + 0.5)/4+0.4) {
 					System.out.println(x);
 					System.out.println(y);
 					solution(toEscavate);
@@ -164,7 +170,6 @@ public class GUI {
 	}
 	
 	public void solution(List<Cell> toEscavate) {
-		//int[] nRowsNCols = maxRowMaxCol(this.graph.getVertices());
 		for(Cell each : toEscavate) {
 			StdDraw.setPenColor(Color.WHITE); 
 			StdDraw.filledSquare(each.c, -each.r, 0.5);
