@@ -56,11 +56,15 @@ public class GUI {
 		int[] nRowsNCols = maxRowMaxCol(cells);
 		
 		StdDraw.setPenColor(Color.decode("#7CB342")); 
-		StdDraw.filledRectangle(nRowsNCols[1]+2, 0, 0.3,0.1);
+		StdDraw.filledRectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/2, 0.3,0.1);
 		StdDraw.setPenColor(); 
-		StdDraw.rectangle(nRowsNCols[1]+2, 0, 0.3,0.1);
-		StdDraw.text(nRowsNCols[1]+2, 0, "Solution");
+		StdDraw.rectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/2, 0.3,0.1);
+		StdDraw.text(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/2, "Solution");
 	
+		StdDraw.rectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/1.5, 0.3,0.1);
+		StdDraw.text(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/1.5, "Profit");
+		
+		
 		
 		int maxValue = 0;
 		int minValue = 0;
@@ -84,7 +88,6 @@ public class GUI {
 			
 			//blocks color	
 			//positive
-			
 			if(intName>0 && intName<positiveValues) {
 				StdDraw.picture(c.c, -c.r, "gold.jpg",1,1);// diamond
 			}
@@ -94,9 +97,7 @@ public class GUI {
 			else if(intName>=2*positiveValues) {
 				StdDraw.picture(c.c, -c.r, "diamond.jpg",1,1);
 			}
-			
 			//negative
-			
 			else if(intName<=0 && intName>negativeValues) {
 				StdDraw.picture(c.c, -c.r, "dirt.jpeg",1,1);
 			}
@@ -108,20 +109,22 @@ public class GUI {
 			}
 			else if(intName<=3*negativeValues) {
 				StdDraw.picture(c.c, -c.r, "stone.png",1,1);
-			}
+			}	
 			
-
+			
 			//contouring
 			StdDraw.setPenColor();
 			StdDraw.square(c.c, -c.r, 0.5);
-			
-			// number
+			//number
 			StdDraw.setPenColor(StdDraw.WHITE);
+			
+			StdDraw.text(c.c, -c.r, String.valueOf(intName));
 			
 			StdDraw.text(c.c, -c.r, String.valueOf(intName));
 			}
 		
 		StdDraw.show();
+	
 	}
 	
 	
