@@ -34,6 +34,7 @@ public class GUI {
 	public void menu() {
 		
 		StdDraw.picture( -0.5+X/2,0.5-Y/2, "mur.png");
+		StdDraw.picture( -0.5+X/2,0.5-Y/2, "menu.png");
 		boolean menu = true;
 		
 		while (menu) {
