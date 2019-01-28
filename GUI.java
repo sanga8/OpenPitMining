@@ -86,28 +86,36 @@ public class GUI {
 			//positive
 			
 			if(intName>0 && intName<positiveValues) {
-				StdDraw.picture(c.c, -c.r, "gold.jpg",1,1);// diamond
+				StdDraw.setPenColor(Color.decode("#81D4FA"));
+				StdDraw.picture(c.c, -c.r,;// diamond
+				StdDraw.filledSquare(c.c, -c.r, 0.5);
 			}
 			else if(intName>=positiveValues && intName<2*positiveValues) {
-				StdDraw.picture(c.c, -c.r, "diamond.jpg",1,1);		
+				StdDraw.setPenColor(Color.decode("#29B6F6")); 
+				StdDraw.filledSquare(c.c, -c.r, 0.5);			
 			}
 			else if(intName>=2*positiveValues) {
-				StdDraw.picture(c.c, -c.r, "diamond.jpg",1,1);
+				StdDraw.setPenColor(Color.decode("#0288D1")); 
+				StdDraw.filledSquare(c.c, -c.r, 0.5);
 			}
 			
 			//negative
 			
 			else if(intName<=0 && intName>negativeValues) {
-				StdDraw.picture(c.c, -c.r, "dirt.jpeg",1,1);
+				StdDraw.setPenColor(Color.decode("#A1887F")); // grey 
+				StdDraw.filledSquare(c.c, -c.r, 0.5);
 			}
 			else if(intName<=negativeValues && intName>2*negativeValues) {
-				StdDraw.picture(c.c, -c.r, "dirt.jpeg",1,1);
+				StdDraw.setPenColor(Color.decode("#6D4C41")); 
+				StdDraw.filledSquare(c.c, -c.r, 0.5);
 			}
 			else if(intName<=2*negativeValues && intName>3*negativeValues) {
-				StdDraw.picture(c.c, -c.r, "stone.png",1,1);
+				StdDraw.setPenColor(Color.decode("#455A64")); 
+				StdDraw.filledSquare(c.c, -c.r, 0.5);
 			}
 			else if(intName<=3*negativeValues) {
-				StdDraw.picture(c.c, -c.r, "stone.png",1,1);
+				StdDraw.setPenColor(Color.decode("#263238")); 
+				StdDraw.filledSquare(c.c, -c.r, 0.5);
 			}
 			
 
