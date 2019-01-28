@@ -1,28 +1,57 @@
 package projet.OpenPitMining;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import edu.princeton.cs.introcs.StdDraw;
 
 public class GUI {
+	
+	private AdjacencyNetwork<Cell, Integer> graph;
+	private float X;
+	private float Y;
 
-	public static void setupCanvas(Collection<Cell> cells, int canvasWidth, int canvasHeight) {
+	public GUI(AdjacencyNetwork<Cell,Integer> graph) {
+		this.graph = graph;
+		setupCanvas(graph.getVertices(),1200,900);
+		menu();
+		draw();
+	}
+
+	public void setupCanvas(Collection<Cell> cells, int canvasWidth, int canvasHeight) {
 		StdDraw.setCanvasSize(canvasWidth, canvasHeight);
 		int[] nRowsNCols = maxRowMaxCol(cells);
+		this.X = (int) (nRowsNCols[1] + 0.5+2+0.5);
+		this.Y = (int) (nRowsNCols[0] + 0.5 + 0.5);
 		StdDraw.setXscale(-0.5, nRowsNCols[1] + 0.5+2);
 		StdDraw.setYscale(-(nRowsNCols[0] + 0.5), 0.5);
 		
 	}
 	
-	public static void draw(AdjacencyNetwork<Cell, Integer> graph) {
-		draw(graph, graph.getVertices());
+	public void menu() {
+		
+		StdDraw.picture( -0.5+X/2,0.5-Y/2, "mur.png");
+		boolean menu = true;
+		
+		while (menu) {
+						
+			if (StdDraw.mousePressed()) {
+				Double x = StdDraw.mouseX(), y = StdDraw.mouseY();
+				StdDraw.clear();
+				menu=false;
+			}
+			
+		}
 	}
 	
-	public static void draw(AdjacencyNetwork<Cell, Integer> graph, Collection<Cell> cells) {
+	public void draw() {
 		// StdDraw.setPenRadius(0.01);
 		//StdDraw.enableDoubleBuffering();
+		List<Cell> cells = new ArrayList<Cell>();
+		cells = this.graph.getVertices();
 		int[] nRowsNCols = maxRowMaxCol(cells);
 		
 		StdDraw.setPenColor(Color.decode("#7CB342")); 
@@ -116,7 +145,7 @@ public class GUI {
 		return res;
 	}
 	
-	public static void play(AdjacencyNetwork<Cell,Integer> graph,List<Cell> toEscavate) {
+	public void play(List<Cell> toEscavate) {
 		
 		int[] nRowsNCols = maxRowMaxCol(graph.getVertices());
 		boolean play = true;
@@ -128,7 +157,7 @@ public class GUI {
 				if(x>(nRowsNCols[1]+2-0.3)&&x<(nRowsNCols[1]+2+0.3) && y>-0.1&&y<0.1) {
 					System.out.println(x);
 					System.out.println(y);
-					solution(graph,toEscavate);
+					solution(toEscavate);
 					play=false;
 				}
 				
@@ -137,8 +166,8 @@ public class GUI {
 		}
 	}
 	
-	public static void solution(AdjacencyNetwork<Cell,Integer> graph,List<Cell> toEscavate) {
-		int[] nRowsNCols = maxRowMaxCol(graph.getVertices());
+	public void solution(List<Cell> toEscavate) {
+		//int[] nRowsNCols = maxRowMaxCol(this.graph.getVertices());
 		for(Cell each : toEscavate) {
 			StdDraw.setPenColor(Color.WHITE); 
 			StdDraw.filledSquare(each.c, -each.r, 0.5);

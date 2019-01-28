@@ -99,22 +99,16 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		
-		InputStream test = new FileInputStream(new File("test.txt"));
-
 		List<AdjacencyNetwork<Cell, Integer>> graphs = new ArrayList<AdjacencyNetwork<Cell, Integer>>();
-		
 		graphs = read("test.txt");
 		AdjacencyNetwork<Cell, Integer> vGraph = graphs.get(0);
 		AdjacencyNetwork<Cell, Integer> rGraph = graphs.get(1);
-		
-		
-		GUI.setupCanvas(vGraph.getVertices(),1200,900);
-		GUI.draw(vGraph);
-		
 		List<Cell> toEscavate = new ArrayList<Cell>();
+		
+		GUI GUI = new GUI(vGraph);
+		
 		toEscavate=MinCut.mC(vGraph, rGraph);
-
-		GUI.play(vGraph, toEscavate);
+		GUI.play(toEscavate);
 		
 
 	}
