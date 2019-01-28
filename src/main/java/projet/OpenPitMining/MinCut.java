@@ -126,24 +126,15 @@ public static List<Cell> mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetw
 		
 		int mincut = 0;
 		
-		Map<Cell,Boolean> reachable = new HashMap<Cell,Boolean>();
-		
-		
 		for(Cell each : rGraph.getVertices()) {
 			
-			if(!each.equals(S)) {
-				reachable.put(each, rGraph.connexion(flow, S, each));
+			if(!each.equals(S) && rGraph.connexion(flow, S, each)==true) {
+				System.out.println(each.getR()+";"+each.getC());
+				toEscavate.add(each);
 			}
 	
 		}
 		
-		for(Cell each : reachable.keySet()) {
-			if(reachable.get(each)==true) {
-				System.out.println(each.getR()+";"+each.getC());
-				toEscavate.add(each);
-				
-			}
-		}
 		
 	     int maxprofit =allProfit-maxFlow;
 	     System.out.println("Le profit max est = "+maxprofit);
