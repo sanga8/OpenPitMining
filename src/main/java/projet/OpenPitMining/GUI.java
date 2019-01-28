@@ -66,10 +66,10 @@ public class GUI {
 		StdDraw.rectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/4, 0.45,0.45);
 		StdDraw.picture(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/4, "pickaxe.png", 1,0.9);
 	
-		StdDraw.rectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/7.2, 0.45,0.2);
-		StdDraw.picture(nRowsNCols[1]+1.7, -(nRowsNCols[0] + 0.5)/7.3, "coin.png",0.3,0.3);
+		StdDraw.rectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/15, 0.45,0.2);
+		StdDraw.picture(nRowsNCols[1]+1.7, -(nRowsNCols[0] + 0.5)/15, "coin.png",0.3,0.3);
 		int a = 0;
-		StdDraw.text(nRowsNCols[1]+2.15, -(nRowsNCols[0] + 0.5)/7,  String.valueOf(a));
+		StdDraw.text(nRowsNCols[1]+2.15, -(nRowsNCols[0] + 0.5)/15,  String.valueOf(a));
 		
 		
 		int maxValue = 0;
@@ -163,9 +163,7 @@ public class GUI {
 					solution(toEscavate);
 					play=false;
 				}
-				
-			}
-			
+			}	
 		}
 	}
 	
