@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -21,6 +23,7 @@ public class GUI implements MouseListener,MouseMotionListener{
 	int positiveValues;
 	int negativeValues;
 	int currentProfit = 0;
+	protected Map<Cell,Boolean> profit = new HashMap<Cell,Boolean>();
 	
 	Font fontMinecraft = new Font("Minecraft Evenings",Font.BOLD,90);
 	Font fontMinecraftPetit = new Font("Minecraft Evenings",Font.ITALIC,20);
@@ -44,6 +47,9 @@ public class GUI implements MouseListener,MouseMotionListener{
 
 	public void setGraph(AdjacencyNetwork<Cell, Integer> graph) {
 		this.graph = graph;
+		for(Cell each : graph.getVertices()) {
+			this.profit.put(each, false);
+		}
 	}
 
 	public void setupCanvas(Collection<Cell> cells, int canvasWidth, int canvasHeight) {
@@ -91,7 +97,15 @@ public class GUI implements MouseListener,MouseMotionListener{
 		StdDraw.rectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/4, 0.45,0.45);
 		StdDraw.picture(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/4, "pickaxe.png", 1,0.9);
 	
-		updateProfit();
+		this.currentProfit =0;
+		
+		StdDraw.setPenColor(Color.GRAY); 
+		StdDraw.filledRectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/15, 0.45,0.2);
+		StdDraw.setPenColor(); 
+		StdDraw.rectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/15, 0.45,0.2);
+		StdDraw.picture(nRowsNCols[1]+1.7, -(nRowsNCols[0] + 0.5)/15, "coin.png",0.3,0.3);
+		
+		StdDraw.text(nRowsNCols[1]+2.15, -(nRowsNCols[0] + 0.5)/15,  String.valueOf(currentProfit));
 		
 		
 		int maxValue = 0;
@@ -228,24 +242,29 @@ public class GUI implements MouseListener,MouseMotionListener{
 					StdDraw.filledSquare(x, -y, 0.5);
 					StdDraw.setPenColor();
 					StdDraw.square(x, -y, 0.5);
-					this.currentProfit += this.graph.getProfit(this.network[(int) y][(int) x]);
-					updateProfit();
+					
+					updateProfit(this.network[(int) y][(int) x]);
 				}
 				
 			}	
 		}
 	}
 	
-	public void updateProfit() {
-		int[] nRowsNCols = maxRowMaxCol(graph.getVertices());
+	public void updateProfit(Cell cell) {
+		if(this.profit.get(cell)==false) {
+			this.profit.put(cell, true);
+			this.currentProfit += graph.getProfit(cell);
+			int[] nRowsNCols = maxRowMaxCol(graph.getVertices());
+			
+			StdDraw.setPenColor(Color.GRAY); 
+			StdDraw.filledRectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/15, 0.45,0.2);
+			StdDraw.setPenColor(); 
+			StdDraw.rectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/15, 0.45,0.2);
+			StdDraw.picture(nRowsNCols[1]+1.7, -(nRowsNCols[0] + 0.5)/15, "coin.png",0.3,0.3);
+			
+			StdDraw.text(nRowsNCols[1]+2.15, -(nRowsNCols[0] + 0.5)/15,  String.valueOf(currentProfit));
+		}
 		
-		StdDraw.setPenColor(Color.GRAY); 
-		StdDraw.filledRectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/15, 0.45,0.2);
-		StdDraw.setPenColor(); 
-		StdDraw.rectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/15, 0.45,0.2);
-		StdDraw.picture(nRowsNCols[1]+1.7, -(nRowsNCols[0] + 0.5)/15, "coin.png",0.3,0.3);
-		
-		StdDraw.text(nRowsNCols[1]+2.15, -(nRowsNCols[0] + 0.5)/15,  String.valueOf(currentProfit));
 	}
 	
 	public void solution(List<List<Cell>> soluce) {
