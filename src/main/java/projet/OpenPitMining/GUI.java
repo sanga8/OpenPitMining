@@ -85,49 +85,63 @@ public class GUI {
 		}
 		System.out.println(maxValue);
 		System.out.println(minValue);
-		int positiveValues = maxValue/3;
-		int negativeValues = minValue/4;
+		int positiveValues = maxValue/2;
+		int negativeValues = minValue/3;
 		
-		for (Cell c : cells) {
-			
-			int intName = graph.getProfit(c);
-			
-			//blocks color	
-			//positive
-			if(intName>0 && intName<positiveValues) {
-				StdDraw.picture(c.c, -c.r, "gold.jpg",1,1);// diamond
-			}
-			else if(intName>=positiveValues && intName<2*positiveValues) {
-				StdDraw.picture(c.c, -c.r, "diamond.jpg",1,1);		
-			}
-			else if(intName>=2*positiveValues) {
-				StdDraw.picture(c.c, -c.r, "diamond.jpg",1,1);
-			}
-			//negative
-			else if(intName<=0 && intName>negativeValues) {
-				StdDraw.picture(c.c, -c.r, "dirt.jpeg",1,1);
-			}
-			else if(intName<=negativeValues && intName>2*negativeValues) {
-				StdDraw.picture(c.c, -c.r, "dirt.jpeg",1,1);
-			}
-			else if(intName<=2*negativeValues && intName>3*negativeValues) {
+		if(positiveValues>0) {
+			for (Cell c : cells) {
+				
+				int intName = graph.getProfit(c);
+				
+				//blocks color	
+				//positive
+				if(intName>0 && intName<positiveValues) {
+					StdDraw.picture(c.c, -c.r, "gold.jpg",1,1);// diamond
+				}
+				
+				else if(intName>=positiveValues) {
+					StdDraw.picture(c.c, -c.r, "diamond.jpg",1,1);
+				}
+				//negative
+				else if(intName<=0 && intName>negativeValues) {
+					StdDraw.picture(c.c, -c.r, "dirt.jpeg",1,1);
+				}
+				else if(intName<=negativeValues && intName>2*negativeValues) {
+					StdDraw.picture(c.c, -c.r, "andesite.png",1,1);
+				}
+				else if(intName<=2*negativeValues) {
+					StdDraw.picture(c.c, -c.r, "stone.png",1,1);
+				}	
+				
+				
+				//contouring
+				StdDraw.setPenColor();
+				StdDraw.square(c.c, -c.r, 0.5);
+				//number
+				StdDraw.setPenColor(StdDraw.WHITE);
+				
+				StdDraw.text(c.c, -c.r, String.valueOf(intName));
+				
+				StdDraw.text(c.c, -c.r, String.valueOf(intName));
+				}
+		}
+		else {
+			for (Cell c : cells) {  // si il n'y a pas de profit positif
+				
+				int intName = graph.getProfit(c);
 				StdDraw.picture(c.c, -c.r, "stone.png",1,1);
-			}
-			else if(intName<=3*negativeValues) {
-				StdDraw.picture(c.c, -c.r, "stone.png",1,1);
-			}	
-			
-			
-			//contouring
-			StdDraw.setPenColor();
-			StdDraw.square(c.c, -c.r, 0.5);
-			//number
-			StdDraw.setPenColor(StdDraw.WHITE);
-			
-			StdDraw.text(c.c, -c.r, String.valueOf(intName));
-			
-			StdDraw.text(c.c, -c.r, String.valueOf(intName));
-			}
+
+				//contouring
+				StdDraw.setPenColor();
+				StdDraw.square(c.c, -c.r, 0.5);
+				//number
+				StdDraw.setPenColor(StdDraw.WHITE);
+				
+				StdDraw.text(c.c, -c.r, String.valueOf(intName));
+				
+				StdDraw.text(c.c, -c.r, String.valueOf(intName));
+				}
+		}
 		
 		StdDraw.show();
 	
