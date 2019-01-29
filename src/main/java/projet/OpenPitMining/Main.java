@@ -17,7 +17,7 @@ import edu.princeton.cs.introcs.StdDraw;
 public class Main {
 	
 
-	private static List<AdjacencyNetwork<Cell, Integer>> read(String is) throws IOException {
+	private static List<AdjacencyNetwork<Cell, Integer>> read(String is,GUI GUI) throws IOException {
 		
 		List<AdjacencyNetwork<Cell, Integer>> fin = new ArrayList<AdjacencyNetwork<Cell, Integer>>();
 		
@@ -56,7 +56,7 @@ public class Main {
 				}
 		}
 		
-		
+		GUI.setNetwork(network);
 		int rows =GUI.maxRowMaxCol(res.getVertices())[0];
 		int columns =GUI.maxRowMaxCol(res.getVertices())[1];
 		int currentEdgeId = 0;
@@ -99,16 +99,17 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		
+		GUI Window = new GUI();
 		List<AdjacencyNetwork<Cell, Integer>> graphs = new ArrayList<AdjacencyNetwork<Cell, Integer>>();
-		graphs = read("test.txt");
+		graphs = read("test.txt",Window);
 		AdjacencyNetwork<Cell, Integer> vGraph = graphs.get(0);
 		AdjacencyNetwork<Cell, Integer> rGraph = graphs.get(1);
-		List<Cell> toEscavate = new ArrayList<Cell>();
+		List<List<Cell>> soluce = new ArrayList<List<Cell>>();
 		
-		GUI GUI = new GUI(vGraph);
-		
-		toEscavate=MinCut.mC(vGraph, rGraph);
-		GUI.play(toEscavate);
+		Window.setGraph(vGraph);
+		Window.menu();
+		soluce=MinCut.mC(vGraph, rGraph);
+		Window.play(soluce);
 		
 
 	}

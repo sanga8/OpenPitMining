@@ -11,9 +11,11 @@ import java.util.Queue;
 
 public class MinCut { 
 
-public static List<Cell> mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Cell,Integer> rGraph) {
+public static List<List<Cell>> mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Cell,Integer> rGraph) {
 	
+		List<List<Cell>> result = new ArrayList<List<Cell>>();
 		List<Cell> toEscavate = new ArrayList<Cell>();
+		List<Cell> notToEscavate = new ArrayList<Cell>();
 		
 		Map<Integer, Integer> flow = new HashMap<Integer, Integer>();
 		Map<Integer, Integer> residual = new HashMap<Integer, Integer>();
@@ -22,8 +24,6 @@ public static List<Cell> mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetw
 		
 		for (Cell v : vGraph.getVertices()) {
 			
-			//System.out.println("main "+v.getR()+";"+v.getC());
-			//System.out.println("voisins");
 			
 			for (Cell v2 : vGraph.getAdjacentVertices(v)) {
 				
@@ -76,12 +76,7 @@ public static List<Cell> mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetw
 
 			}
 		}
-		
-		//System.out.println(rGraph.connexion(S, T));
 	
-		
-		
-		System.out.println("debut");
 		int pathFlow;
 		List<Integer> path;
 		int maxFlow = 0;
@@ -110,7 +105,6 @@ public static List<Cell> mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetw
 		}
 		
 		System.out.println("max flow: " + maxFlow);
-		System.out.println("fin");
 		
 		int allProfit = 0;
 		
@@ -128,10 +122,17 @@ public static List<Cell> mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetw
 		
 		for(Cell each : rGraph.getVertices()) {
 			
-			if(!each.equals(S) && rGraph.connexion(flow, S, each)==true) {
-				System.out.println(each.getR()+";"+each.getC());
-				toEscavate.add(each);
+			if(rGraph.connexion(flow, S, each)==true) {
+				if(!each.equals(S)) {
+					toEscavate.add(each);
+				}
 			}
+			else {
+				if(!each.equals(S)&&!each.equals(T)) {
+					notToEscavate.add(each);
+				}
+			}
+			
 	
 		}
 		
@@ -139,7 +140,10 @@ public static List<Cell> mC(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetw
 	     int maxprofit =allProfit-maxFlow;
 	     System.out.println("Le profit max est = "+maxprofit);
 	     
-	     return toEscavate;
+	     result.add(toEscavate);
+	     result.add(notToEscavate);
+	     
+	     return result;
 	     
 	     
 	}
