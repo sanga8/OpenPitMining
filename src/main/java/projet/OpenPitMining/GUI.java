@@ -5,10 +5,14 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import edu.princeton.cs.introcs.StdDraw;
 
-public class GUI {
+public class GUI implements MouseListener,MouseMotionListener{
 	
 	private AdjacencyNetwork<Cell, Integer> graph;
 	private float X;
@@ -16,6 +20,7 @@ public class GUI {
 	Cell network[][];
 	int positiveValues;
 	int negativeValues;
+	int currentProfit = 0;
 	
 	Font fontMinecraft = new Font("Minecraft Evenings",Font.BOLD,90);
 	Font fontMinecraftPetit = new Font("Minecraft Evenings",Font.ITALIC,20);
@@ -86,10 +91,7 @@ public class GUI {
 		StdDraw.rectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/4, 0.45,0.45);
 		StdDraw.picture(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/4, "pickaxe.png", 1,0.9);
 	
-		StdDraw.rectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/15, 0.45,0.2);
-		StdDraw.picture(nRowsNCols[1]+1.7, -(nRowsNCols[0] + 0.5)/15, "coin.png",0.3,0.3);
-		int a = 0;
-		StdDraw.text(nRowsNCols[1]+2.15, -(nRowsNCols[0] + 0.5)/15,  String.valueOf(a));
+		updateProfit();
 		
 		
 		int maxValue = 0;
@@ -188,17 +190,62 @@ public class GUI {
 		boolean play = true;
 		
 		while (play) {
+			while (!StdDraw.mousePressed()) {
+
+			}
 			if (StdDraw.mousePressed()) {
-				Double x = StdDraw.mouseX(), y = StdDraw.mouseY();
+				double x = StdDraw.mouseX(), y = StdDraw.mouseY();
 
 				if(x>(nRowsNCols[1]+2-0.3) && x<(nRowsNCols[1]+2+0.3) && y>-(nRowsNCols[0] + 0.5)/4-0.4&&y<-(nRowsNCols[0] + 0.5)/4+0.4) {
-					System.out.println(x);
-					System.out.println(y);
+					
 					solution(soluce);
 					play=false;
 				}
+				//if terminé
+				
+				if((x>=-0.5 && x<= nRowsNCols[0]+0.5) && (y<=0.5 && y>=-nRowsNCols[1]-0.5)) {  // to know if x and y are in the mine
+					if(Math.abs(x-(int) x)<0.5) {
+						x = (int) x;
+						if(Math.abs(y-(int) y)<0.5) {
+							y = Math.abs((int) y);
+						}
+						else {
+							y = 1+Math.abs((int) y);
+						}
+					}
+					else {
+						x = (int) x+1;
+						if(Math.abs(y-(int) y)<0.5) {
+							y = Math.abs((int) y);
+						}
+						else {
+							y = 1+Math.abs((int) y);
+						}
+					}
+					System.out.println((int) x);
+					System.out.println((int) y);
+					StdDraw.setPenColor(Color.WHITE); 
+					StdDraw.filledSquare(x, -y, 0.5);
+					StdDraw.setPenColor();
+					StdDraw.square(x, -y, 0.5);
+					this.currentProfit += this.graph.getProfit(this.network[(int) y][(int) x]);
+					updateProfit();
+				}
+				
 			}	
 		}
+	}
+	
+	public void updateProfit() {
+		int[] nRowsNCols = maxRowMaxCol(graph.getVertices());
+		
+		StdDraw.setPenColor(Color.GRAY); 
+		StdDraw.filledRectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/15, 0.45,0.2);
+		StdDraw.setPenColor(); 
+		StdDraw.rectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/15, 0.45,0.2);
+		StdDraw.picture(nRowsNCols[1]+1.7, -(nRowsNCols[0] + 0.5)/15, "coin.png",0.3,0.3);
+		
+		StdDraw.text(nRowsNCols[1]+2.15, -(nRowsNCols[0] + 0.5)/15,  String.valueOf(currentProfit));
 	}
 	
 	public void solution(List<List<Cell>> soluce) {
@@ -242,5 +289,40 @@ public class GUI {
 			
 			StdDraw.text(c.c, -c.r, String.valueOf(intName));
 			}
+	}
+
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseDragged(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseMoved(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }
