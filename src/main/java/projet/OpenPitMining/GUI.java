@@ -207,7 +207,7 @@ public class GUI{
 				if (StdDraw.mousePressed()) {
 					double x = StdDraw.mouseX(), y = StdDraw.mouseY();
 	
-					if(x>(nRowsNCols[1]+2-0.3) && x<(nRowsNCols[1]+2+0.3) && y>-(nRowsNCols[0] + 0.5)/4-0.4&&y<-(nRowsNCols[0] + 0.5)/4+0.4) {
+					if(x>(nRowsNCols[1]+2-0.45) && x<(nRowsNCols[1]+2+0.45) && y>-(nRowsNCols[0] + 0.5)/4-0.45&&y<-(nRowsNCols[0] + 0.5)/4+0.45) {
 						
 						if(this.currentProfit==graph.getMaxProfit()) {
 							StdDraw.clear();
@@ -322,6 +322,9 @@ public class GUI{
 			StdDraw.filledSquare(each.c, -each.r, 0.5);
 			StdDraw.setPenColor();
 			StdDraw.square(each.c, -each.r, 0.5);
+			try{
+				Thread.sleep(50);
+				}catch(InterruptedException e){}
 		}
 		for (Cell c : soluce.get(1)) {
 			
@@ -356,6 +359,7 @@ public class GUI{
 			StdDraw.text(c.c, -c.r, String.valueOf(intName));
 			
 			StdDraw.text(c.c, -c.r, String.valueOf(intName));
+			
 			
 			}
 		
