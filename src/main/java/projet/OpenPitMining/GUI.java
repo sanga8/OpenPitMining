@@ -226,7 +226,7 @@ public class GUI{
 							StdDraw.clear();
 							StdDraw.picture( -0.5+X/2,0.5-Y/2, "gameover.png");
 							StdDraw.setFont(fontMinecraftPetit);
-							System.out.println(this.currentProfit);
+							
 							if(this.currentProfit<0) {
 								StdDraw.text(-0.5+X/2 , 0.5-2*Y/3, "You lost "+this.currentProfit+" $");
 							}
@@ -239,8 +239,6 @@ public class GUI{
 						
 						play = false;
 					}
-					System.out.println(x);
-					System.out.println(y);
 	
 					if((x>=-0.5 && x<= nRowsNCols[1]+0.5) && (y<=0.5 && y>=-nRowsNCols[0]-0.5)) {  // to know if x and y are in the mine
 						if(Math.abs(x-(int) x)<0.5) {
@@ -261,8 +259,6 @@ public class GUI{
 								y = 1+Math.abs((int) y);
 							}
 						}
-						System.out.println(x);
-						System.out.println(y);
 						
 						Cell click = this.network[(int) y][(int) x];
 

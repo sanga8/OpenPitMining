@@ -108,7 +108,7 @@ public class Main {
 		
 		Window.setGraph(vGraph);
 		Window.menu();
-		soluce=MinCut.mC(vGraph, rGraph);
+		soluce=MaxFlow.mF(vGraph, rGraph);
 		Window.play(soluce);
 		
 

@@ -1,136 +1,149 @@
 package projet.OpenPitMining;
-	import java.util.*; 
-	import java.lang.*; 
-	import java.io.*; 
-	import java.util.LinkedList; 
+
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue; 
+
+public class MaxFlow { 
+
+public static List<List<Cell>> mF(AdjacencyNetwork<Cell,Integer> vGraph, AdjacencyNetwork<Cell,Integer> rGraph) {
 	
-public class MaxFlow {
-		static final int V =14; //Number of vertices in graph 
-		 static int X = Integer.MAX_VALUE; //infini
+		List<List<Cell>> result = new ArrayList<List<Cell>>();
+		List<Cell> toEscavate = new ArrayList<Cell>();
+		List<Cell> notToEscavate = new ArrayList<Cell>();
 		
-		/* Returns true if there is a path from source 's' to sink 
-		't' in residual graph. Also fills parent[] to store the 
-		path */
-		boolean bfs(int rGraph[][], int s, int t, int parent[]) 
-		{ 
-			// Create a visited array and mark all vertices as not visited 
-			boolean visited[] = new boolean[V]; 
-			for(int i=0; i<V; ++i) 
-				visited[i]=false; 
-      
-			// Create a queue, enqueue source vertex and mark 
-			// source vertex as visited 
-			LinkedList<Integer> queue = new LinkedList<Integer>(); 
-			queue.add(s); 
-			visited[s] = true; 
-			parent[s]=-1; 
-
-			// Standard BFS Loop 
-			while (queue.size()!=0) 
-			{ 
-				int u = queue.poll(); 
-
-				for (int v=0; v<V; v++) 
-				{ 
-					if (visited[v]==false && rGraph[u][v] > 0) 
-					{ 
-						queue.add(v); 
-						parent[v] = u; 
-						visited[v] = true; 
-					} 
-				} 
-			} 
-
-			// If we reached sink in BFS starting from source, then 
-			// return true, else false 
-			return (visited[t] == true); 
-		} 
-
-		// Returns tne maximum flow from s to t in the given graph 
-		int fordFulkerson(int graph[][], int s, int t) 
-		{ 
-			int u, v; 
-
-			// Create a residual graph and fill the residual graph 
-			// with given capacities in the original graph as 
-			// residual capacities in residual graph 
-
-			// Residual graph where rGraph[i][j] indicates 
-			// residual capacity of edge from i to j (if there 
-			// is an edge. If rGraph[i][j] is 0, then there is 
-			// not) 
-			int rGraph[][] = new int[V][V]; 
-
-			for (u = 0; u < V; u++) 
-				for (v = 0; v < V; v++) 
-					rGraph[u][v] = graph[u][v]; 
-
-			// This array is filled by BFS and to store path 
-			int parent[] = new int[V]; 
-
-			int max_flow = 0; // There is no flow initially 
-
-			// Augment the flow while tere is path from source 
-			// to sink 
-			while (bfs(rGraph, s, t, parent)) 
-			{ 
-				// Find minimum residual capacity of the edhes 
-				// along the path filled by BFS. Or we can say 
-				// find the maximum flow through the path found. 
-				int path_flow = Integer.MAX_VALUE; 
-				for (v=t; v!=s; v=parent[v]) 
-				{ 
-					u = parent[v]; 
-					path_flow = Math.min(path_flow, rGraph[u][v]); 
-				} 
-
-				// update residual capacities of the edges and 
-				// reverse edges along the path 
-				for (v=t; v != s; v=parent[v]) 
-				{ 
-					u = parent[v]; 
-					rGraph[u][v] -= path_flow; 
-					rGraph[v][u] += path_flow; 
-				} 
-
-				// Add path flow to overall flow 
-				max_flow += path_flow; 
-			} 
-
-			// Return the overall flow 
-			return max_flow; 
-		} 
-
-		// Driver program to test above functions 
-		public static void main (String[] args) throws java.lang.Exception 
-		{ 
-			// Let us create a graph shown in the above example 
-			int graph[][] =new int[][] {
-				  {0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 11, 22, 2, 0}, //S
-				  
+		Map<Integer, Integer> flow = new HashMap<Integer, Integer>();
+		Map<Integer, Integer> residual = new HashMap<Integer, Integer>();
+		int  p, i1, i2, edge;
+		int currentEdgeId = vGraph.getEdges().size();
+		
+		for (Cell v : vGraph.getVertices()) {
+			
+			
+			for (Cell v2 : vGraph.getAdjacentVertices(v)) {
 				
-				  
-				  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10},
-				  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5}, 
-				  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7}, 
-				  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4}, 
-				  {0, X, X, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10},
-				  {0, X, X, X, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11},
-				  {0, 0, X, X, X, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-				  {0, 0, 0, X, X, 0, 0, 0, 0, 0, 0, 0, 0, 3},
-				  {0, 0, 0, 0, 0, X, X, 0, 0, 0, 0, 0, 0, 0},
-				  {0, 0, 0, 0, 0, X, X, X, 0, 0, 0, 0, 0, 0},
-				  {0, 0, 0, 0, 0, 0, X, X, X, 0, 0, 0, 0, 0},
-				  {0, 0, 0, 0, 0, 0, 0, X, X, 0, 0, 0, 0, 0},
-				  
-				  
-				  
-				  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}// T
-   }; 
-			MaxFlow m = new MaxFlow(); 
+				
+				edge = (int)(vGraph.getEdge(v, v2));
+				i1=currentEdgeId++;
+				rGraph.addEdgeMf(edge, v, v2);
+				rGraph.addEdgeMf(i1, v2, v);
+				flow.put(edge, Integer.MAX_VALUE);
+				flow.put(i1, 0);
+				residual.put(edge, i1);
+				residual.put(i1, edge);
+				
+			}
+		}
+		
+		Cell S = new Cell(-1,0);
+		Cell T = new Cell(-2,0);
+		rGraph.addVertex(S);
+		rGraph.addVertex(T);	
+		
+		
+		
+		currentEdgeId = rGraph.getEdges().size();
+		
+		for (Cell v : vGraph.getVertices()) {
+			p = vGraph.getProfit(v);
+			if (p > 0) {
+				i1=currentEdgeId++;
+				i2=currentEdgeId++;
+				rGraph.addEdgeMf(i1, S, v);
+				rGraph.addEdgeMf(i2, v, S);
+				flow.put(i1, p);
+				flow.put(i2, 0);
+				residual.put(i1, i2);
+				residual.put(i2, i1);
 
-			System.out.println("The maximum possible flow is " + 
-							m.fordFulkerson(graph, 0, V-1)); 
+			} else if (p < 0) {
+				i1=currentEdgeId++;
+				i2=currentEdgeId++;
+				rGraph.addEdgeMf(i1, v, T);
+				rGraph.addEdgeMf(i2, T, v);
+				flow.put(i1, -p);
+				flow.put(i2, 0);
+				residual.put(i1, i2);
+				residual.put(i2, i1);
 
-		} 
-	} 
+			}
+		}
+	
+		int pathFlow;
+		List<Integer> path;
+		int maxFlow = 0;
+		
+		
+		while ((path = rGraph.bfs(flow, S, T)) != null) {  // tant qu'il y a un chemin
+			
+			
+			pathFlow = Integer.MAX_VALUE;
+			for (int e : path) {
+				
+				
+				pathFlow = Math.min(pathFlow, flow.get(e));
+			}
+
+			maxFlow += pathFlow;
+			
+			
+			
+			for (int e : path) {
+				flow.put(e, flow.get(e) - pathFlow);
+				flow.put(residual.get(e), flow.get(residual.get(e)) + pathFlow);
+			}
+	         
+			
+		}
+		
+		System.out.println("max flow: " + maxFlow);
+		
+		int allProfit = 0;
+		
+		for(Cell each : vGraph.getVertices()) {
+			
+			if(!each.equals(S)&&!each.equals(T)) {
+				if(vGraph.getProfit(each)>0) {
+					allProfit += vGraph.getProfit(each);
+				}
+			}
+			
+		}
+		
+		int mincut = 0;
+		
+		for(Cell each : rGraph.getVertices()) {
+			
+			if(rGraph.connexion(flow, S, each)==true) {
+				if(!each.equals(S)) {
+					toEscavate.add(each);
+				}
+			}
+			else {
+				if(!each.equals(S)&&!each.equals(T)) {
+					notToEscavate.add(each);
+				}
+			}
+			
+	
+		}
+		
+		
+	     int maxProfit =allProfit-maxFlow;
+	     rGraph.setMaxProfit(maxProfit);
+	     vGraph.setMaxProfit(maxProfit);
+	     System.out.println("Le profit max est = "+maxProfit);
+	     
+	     result.add(toEscavate);
+	     result.add(notToEscavate);
+	     
+	     return result;
+	     
+	     
+	}
+} 
