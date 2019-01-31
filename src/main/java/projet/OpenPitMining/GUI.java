@@ -93,10 +93,11 @@ public class GUI{
 		cells = this.graph.getVertices();
 		int[] nRowsNCols = maxRowMaxCol(cells);
 		
-
+		StdDraw.setPenColor(Color.GRAY); 
+		StdDraw.filledRectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/4, 0.45,0.45);
 		StdDraw.setPenColor(); 
 		StdDraw.rectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/4, 0.45,0.45);
-		StdDraw.picture(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/4, "pickaxe.png", 1,0.9);
+		StdDraw.picture(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.7)/4, "woodpick.png", 1,0.9);
 	
 		this.currentProfit =0;
 		
