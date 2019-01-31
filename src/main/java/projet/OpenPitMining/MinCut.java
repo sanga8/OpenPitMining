@@ -43,10 +43,7 @@ public static List<List<Cell>> mC(AdjacencyNetwork<Cell,Integer> vGraph, Adjacen
 		Cell S = new Cell(-1,0);
 		Cell T = new Cell(-2,0);
 		rGraph.addVertex(S);
-		rGraph.addVertex(T);
-		//vGraph.addVertex(S);
-		//vGraph.addVertex(T);
-		
+		rGraph.addVertex(T);	
 		
 		
 		
@@ -137,8 +134,10 @@ public static List<List<Cell>> mC(AdjacencyNetwork<Cell,Integer> vGraph, Adjacen
 		}
 		
 		
-	     int maxprofit =allProfit-maxFlow;
-	     System.out.println("Le profit max est = "+maxprofit);
+	     int maxProfit =allProfit-maxFlow;
+	     rGraph.setMaxProfit(maxProfit);
+	     vGraph.setMaxProfit(maxProfit);
+	     System.out.println("Le profit max est = "+maxProfit);
 	     
 	     result.add(toEscavate);
 	     result.add(notToEscavate);

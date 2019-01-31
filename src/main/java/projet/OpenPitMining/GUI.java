@@ -14,7 +14,7 @@ import java.awt.event.MouseMotionListener;
 
 import edu.princeton.cs.introcs.StdDraw;
 
-public class GUI implements MouseListener,MouseMotionListener{
+public class GUI{
 	
 	private AdjacencyNetwork<Cell, Integer> graph;
 	private float X;
@@ -63,6 +63,7 @@ public class GUI implements MouseListener,MouseMotionListener{
 	}
 	
 	public void menu() {
+		
 		setupCanvas(graph.getVertices(),1200,900);
 		StdDraw.setFont(fontMinecraft);	
 		StdDraw.picture( -0.5+X/2,0.5-Y/2, "background.jpg");
@@ -119,8 +120,6 @@ public class GUI implements MouseListener,MouseMotionListener{
 					minValue = graph.getProfit(each);
 				}
 		}
-		System.out.println(maxValue);
-		System.out.println(minValue);
 		this.positiveValues = maxValue/2;
 		this.negativeValues = minValue/3;
 		
@@ -202,51 +201,96 @@ public class GUI implements MouseListener,MouseMotionListener{
 		
 		int[] nRowsNCols = maxRowMaxCol(graph.getVertices());
 		boolean play = true;
-		
-		while (play) {
-			while (!StdDraw.mousePressed()) {
 
+		while(play) {
+			
+				if (StdDraw.mousePressed()) {
+					double x = StdDraw.mouseX(), y = StdDraw.mouseY();
+	
+					if(x>(nRowsNCols[1]+2-0.3) && x<(nRowsNCols[1]+2+0.3) && y>-(nRowsNCols[0] + 0.5)/4-0.4&&y<-(nRowsNCols[0] + 0.5)/4+0.4) {
+						
+						if(this.currentProfit==graph.getMaxProfit()) {
+							StdDraw.clear();
+							StdDraw.picture( -0.5+X/2,0.5-Y/2, "background.jpg");
+							StdDraw.picture( -0.5+X/2,0.5-Y/2, "win.png");
+							StdDraw.setFont(fontMinecraftPetit);
+							
+							StdDraw.text(-0.5+X/2 , 0.5-2*Y/3, "You collected "+this.currentProfit+" $");
+							
+						}
+						else {
+							solution(soluce);
+							try{
+								Thread.sleep(1500);
+								}catch(InterruptedException e){}
+							StdDraw.clear();
+							StdDraw.picture( -0.5+X/2,0.5-Y/2, "gameover.png");
+							StdDraw.setFont(fontMinecraftPetit);
+							System.out.println(this.currentProfit);
+							if(this.currentProfit<0) {
+								StdDraw.text(-0.5+X/2 , 0.5-2*Y/3, "You lost "+this.currentProfit+" $");
+							}
+							else {
+								StdDraw.text(-0.5+X/2 , 0.5-2*Y/3, "You collected "+this.currentProfit+" $");
+							}
+							
+						}
+						
+						
+						play = false;
+					}
+	
+					if((x>=-0.5 && x<= nRowsNCols[0]+0.5) && (y<=0.5 && y>=-nRowsNCols[1]-0.5)) {  // to know if x and y are in the mine
+						if(Math.abs(x-(int) x)<0.5) {
+							x = (int) x;
+							if(Math.abs(y-(int) y)<0.5) {
+								y = Math.abs((int) y);
+							}
+							else {
+								y = 1+Math.abs((int) y);
+							}
+						}
+						else {
+							x = (int) x+1;
+							if(Math.abs(y-(int) y)<0.5) {
+								y = Math.abs((int) y);
+							}
+							else {
+								y = 1+Math.abs((int) y);
+							}
+						}
+						
+						Cell click = this.network[(int) y][(int) x];
+
+						StdDraw.setPenColor(Color.WHITE); 
+						StdDraw.filledSquare(x, -y, 0.5);
+						StdDraw.setPenColor();
+						StdDraw.square(x, -y, 0.5);
+						
+						updateProfit(click);
+						updateNeighbors(click);
+						
+					}
+				}	
+				
+				
+			
+		}
+			
+			
+	}
+	
+	public void updateNeighbors(Cell cell) {
+		for(Cell each: graph.getAdjacentVertices(cell)) {
+			if(this.profit.get(each)==false) {
+				StdDraw.setPenColor(Color.WHITE); 
+				StdDraw.filledSquare(each.c, -each.r, 0.5);
+				StdDraw.setPenColor();
+				StdDraw.square(each.c, -each.r, 0.5);
+				updateProfit(each);
+				this.profit.put(each, true);
+				updateNeighbors(each);
 			}
-			if (StdDraw.mousePressed()) {
-				double x = StdDraw.mouseX(), y = StdDraw.mouseY();
-
-				if(x>(nRowsNCols[1]+2-0.3) && x<(nRowsNCols[1]+2+0.3) && y>-(nRowsNCols[0] + 0.5)/4-0.4&&y<-(nRowsNCols[0] + 0.5)/4+0.4) {
-					
-					solution(soluce);
-					play=false;
-				}
-				//if terminé
-				
-				if((x>=-0.5 && x<= nRowsNCols[0]+0.5) && (y<=0.5 && y>=-nRowsNCols[1]-0.5)) {  // to know if x and y are in the mine
-					if(Math.abs(x-(int) x)<0.5) {
-						x = (int) x;
-						if(Math.abs(y-(int) y)<0.5) {
-							y = Math.abs((int) y);
-						}
-						else {
-							y = 1+Math.abs((int) y);
-						}
-					}
-					else {
-						x = (int) x+1;
-						if(Math.abs(y-(int) y)<0.5) {
-							y = Math.abs((int) y);
-						}
-						else {
-							y = 1+Math.abs((int) y);
-						}
-					}
-					System.out.println((int) x);
-					System.out.println((int) y);
-					StdDraw.setPenColor(Color.WHITE); 
-					StdDraw.filledSquare(x, -y, 0.5);
-					StdDraw.setPenColor();
-					StdDraw.square(x, -y, 0.5);
-					
-					updateProfit(this.network[(int) y][(int) x]);
-				}
-				
-			}	
 		}
 	}
 	
@@ -266,6 +310,7 @@ public class GUI implements MouseListener,MouseMotionListener{
 		}
 		
 	}
+
 	
 	public void solution(List<List<Cell>> soluce) {
 		for(Cell each : soluce.get(0)) {
@@ -307,41 +352,18 @@ public class GUI implements MouseListener,MouseMotionListener{
 			StdDraw.text(c.c, -c.r, String.valueOf(intName));
 			
 			StdDraw.text(c.c, -c.r, String.valueOf(intName));
+			
 			}
+		
+		int[] nRowsNCols = maxRowMaxCol(graph.getVertices());
+		
+		StdDraw.setPenColor(Color.GRAY); 
+		StdDraw.filledRectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/15, 0.45,0.2);
+		StdDraw.setPenColor(); 
+		StdDraw.rectangle(nRowsNCols[1]+2, -(nRowsNCols[0] + 0.5)/15, 0.45,0.2);
+		StdDraw.picture(nRowsNCols[1]+1.7, -(nRowsNCols[0] + 0.5)/15, "coin.png",0.3,0.3);
+		
+		StdDraw.text(nRowsNCols[1]+2.15, -(nRowsNCols[0] + 0.5)/15,  String.valueOf(graph.getMaxProfit()));
 	}
 
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void mouseDragged(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void mouseMoved(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
 }

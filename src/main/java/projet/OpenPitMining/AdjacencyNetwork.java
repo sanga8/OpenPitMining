@@ -19,6 +19,7 @@ public class AdjacencyNetwork<Vertex,Edge> {
 	protected Map<Edge, Vertex> edgeToSrc = new HashMap<Edge, Vertex>();
 	protected Map<Edge, Vertex> edgeToDest = new HashMap<Edge, Vertex>();
 	protected Set<Edge> edges = new HashSet<Edge>();
+	public int maxProfit = 0;
 
 	public void addVertex(Vertex v) {
 		if (!vertices.contains(v)) {
@@ -212,6 +213,14 @@ public class AdjacencyNetwork<Vertex,Edge> {
 			}
 		}
 		return false;
+	}
+
+	public int getMaxProfit() {
+		return maxProfit;
+	}
+
+	public void setMaxProfit(int maxProfit) {
+		this.maxProfit = maxProfit;
 	}
 	
 	
