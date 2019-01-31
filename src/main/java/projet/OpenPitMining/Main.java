@@ -24,7 +24,9 @@ public class Main {
 		AdjacencyNetwork<Cell, Integer> res = new AdjacencyNetwork<Cell, Integer>();
 		AdjacencyNetwork<Cell, Integer> v2 = new AdjacencyNetwork<Cell, Integer>();
 		
-		BufferedReader ar = new BufferedReader(new InputStreamReader(new FileInputStream(new File("test.txt"))));
+		InputStream th = new FileInputStream(new File(is));
+		BufferedReader ar = new BufferedReader(new InputStreamReader(th));
+		
 		int x = 0;
 		int y = 0;
 
@@ -39,7 +41,7 @@ public class Main {
  		
  		Cell network[][] = new Cell[x][y];
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("test.txt"))));
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File(is))));
 
 		// construction du graph pour l'affichage
 		
@@ -101,6 +103,7 @@ public class Main {
 		
 		GUI Window = new GUI();
 		List<AdjacencyNetwork<Cell, Integer>> graphs = new ArrayList<AdjacencyNetwork<Cell, Integer>>();
+		
 		graphs = read("test.txt",Window);
 		AdjacencyNetwork<Cell, Integer> vGraph = graphs.get(0);
 		AdjacencyNetwork<Cell, Integer> rGraph = graphs.get(1);
