@@ -69,7 +69,7 @@ public class GUI{
 		StdDraw.picture( -0.5+X/2,0.5-Y/2, "background.jpg");
 		StdDraw.text(-0.5+X/2 , 0.5-Y/3, "Open Pit Mining");
 		StdDraw.setFont(fontMinecraftPetit);	
-		StdDraw.text(-0.5+X/2 , 0.5-Y, "Made by Guillaume Dupont, Vincent Pauwels, Merlin Rousseau");
+		StdDraw.text(-0.5+X/2 , 0.5-Y, "Click to begin");
 		boolean menu = true;
 
 		while (menu) {

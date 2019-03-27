@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,7 +25,10 @@ public class Main {
 		AdjacencyNetwork<Cell, Integer> res = new AdjacencyNetwork<Cell, Integer>();
 		AdjacencyNetwork<Cell, Integer> v2 = new AdjacencyNetwork<Cell, Integer>();
 		
-		InputStream th = new FileInputStream(new File(is));
+		//InputStream th = new FileInputStream(new File(is));
+		
+		InputStream th = Main.class.getResourceAsStream(is);
+		
 		BufferedReader ar = new BufferedReader(new InputStreamReader(th));
 		
 		int x = 0;
@@ -104,7 +108,7 @@ public class Main {
 		GUI Window = new GUI();
 		List<AdjacencyNetwork<Cell, Integer>> graphs = new ArrayList<AdjacencyNetwork<Cell, Integer>>();
 		
-		graphs = read("test.txt",Window);
+		graphs = read("mine.txt",Window);
 		AdjacencyNetwork<Cell, Integer> vGraph = graphs.get(0);
 		AdjacencyNetwork<Cell, Integer> rGraph = graphs.get(1);
 		List<List<Cell>> soluce = new ArrayList<List<Cell>>();
